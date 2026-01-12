@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 2s ease-in-out;
+  }
+
+  .animate-slide-in {
+    animation: slideIn 1.5s ease-out 1.5s both;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      width: 0;
+    }
+    to {
+      width: 8rem;
+    }
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dee2e6;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #adb5bd;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Floor surface styling */
+body {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+/* Product hover effects */
+.product-shadow {
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-shadow:hover {
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.25));
+}
+
+/* Floor reflection gradient */
+.floor-reflection {
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 60%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 60%);
+}
+
+/* Backdrop blur support */
+@supports (backdrop-filter: blur(10px)) {
+  .backdrop-blur-sm {
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .animate-fade-in {
+    animation-duration: 1.5s;
+  }
+  
+  .animate-slide-in {
+    animation-duration: 1s;
+    animation-delay: 1s;
+  }
+}
+
+/* Add to cart success animation */
+@keyframes addToCartSuccess {
+  0% {
+    transform: scale(1);
+    background-color: #10b981;
+  }
+  50% {
+    transform: scale(1.05);
+    background-color: #059669;
+  }
+  100% {
+    transform: scale(1);
+    background-color: #10b981;
+  }
+}
+
+.animate-add-to-cart {
+  animation: addToCartSuccess 0.6s ease-in-out;
+}
+
+/* Custom width classes for larger product sizes */
+.xl\:w-68 {
+  width: 17rem;
+}
+
+.xl\:h-68 {
+  height: 17rem;
+}
+
+/* Additional height classes for 20px increase */
+.h-25 {
+  height: 6.25rem; /* 100px */
+}
+
+.sm\:h-33 {
+  height: 8.25rem; /* 132px */
+}
+
+/* Additional width classes for 10px increase */
+.w-24 {
+  width: 6rem; /* 96px - was 80px (w-20) */
+}
+
+.sm\:w-32 {
+  width: 8rem; /* 128px - was 112px (w-28) */
+}
+
+/* Mobile-specific larger sizes for floor view */
+@media (max-width: 640px) {
+  .mobile-floor-product {
+    width: 7rem !important; /* 112px */
+    height: 8.75rem !important; /* 140px */
+  }
+}
+
+@media (min-width: 641px) and (max-width: 767px) {
+  .mobile-floor-product {
+    width: 8rem !important; /* 128px */
+    height: 10rem !important; /* 160px */
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:h-49 {
+    height: 12.25rem; /* 196px */
+  }
+  
+  .md\:w-48 {
+    width: 12rem; /* 192px - was 176px (w-44) */
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:h-61 {
+    height: 15.25rem; /* 244px */
+  }
+  
+  .lg\:w-60 {
+    width: 15rem; /* 240px - was 224px (w-56) */
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:h-73 {
+    height: 18.25rem; /* 292px */
+  }
+  
+  .xl\:w-72 {
+    width: 18rem; /* 288px - was 272px (w-68) */
+  }
+}
