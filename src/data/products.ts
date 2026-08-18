@@ -727,23 +727,5 @@ export const products: Product[] = [
     scale: 0.89,
     zIndex: 4,
     category: 'top'
-  },
-  {
-    id: '40',
-    name: 'Y2 Hoodie No.10',
-    price: 105,
-    image: '/products/40.png',
-    images: [
-      '/products/40a.png',
-      '/products/40.png',
-      '/products/40b.png',
-      '/products/40c.png',
-    ],
-    position: { top: 'calc(310vh - 96px)', left: '82%' },
-    mobilePosition: { top: 'calc(285vh - 70px)', left: '71%' },
-    rotation: 10,
-    scale: 0.96,
-    zIndex: 6,
-    category: 'top'
   }
 ];
