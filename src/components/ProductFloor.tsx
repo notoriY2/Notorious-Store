@@ -1,5 +1,5 @@
 // src/components/ProductFloor.tsx
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShoppingBag, User, Grid3X3, Sparkles, Instagram, Heart } from 'lucide-react';
 import { Product, CartItem } from '../types/Product';
 import ProductItem from './ProductItem';
@@ -8,39 +8,6 @@ import CurrencySelector from './CurrencySelector';
 import { Currency } from '../hooks/useCurrency';
 import { User as UserType } from '../hooks/useAuth';
 import { Product as ProductType } from '../types/Product';
-
-function calculateFloorHeight(
-  products: Product[],
-  isMobile: boolean
-): string {
-  const positions = products.map((product) => {
-    const position = isMobile
-      ? product.mobilePosition?.top
-      : product.position.top;
-
-    if (!position) return 0;
-
-    const match = position.match(/(\d+(?:\.\d+)?)vh/);
-
-    if (match) {
-      return parseFloat(match[1]);
-    }
-
-    const percentMatch = position.match(/(\d+(?:\.\d+)?)%/);
-
-    if (percentMatch) {
-      return parseFloat(percentMatch[1]);
-    }
-
-    return 0;
-  });
-
-  const maxPosition = Math.max(...positions, 100);
-
-  const bottomPaddingVh = 30;
-
-  return `calc(${maxPosition + bottomPaddingVh}vh - 60px)`;
-}
 
 interface ProductFloorProps {
   products: Product[];
@@ -86,29 +53,6 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   const [showFooter, setShowFooter] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const [isMobile, setIsMobile] = useState(
-  typeof window !== 'undefined' ? window.innerWidth < 768 : false
-);
-
-// Extend your existing resize effect instead of adding a new one:
-useEffect(() => {
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 768);
-    setVisibleProducts([]);
-    setTimeout(() => {
-      setVisibleProducts(products);
-    }, 100);
-  };
-
-  window.addEventListener('resize', handleResize);
-  return () => window.removeEventListener('resize', handleResize);
-}, [products]);
-
-const floorHeight = useMemo(
-  () => calculateFloorHeight(products, isMobile),
-  [products, isMobile]
-);
-
   // Animate products loading one by one
   useEffect(() => {
     setVisibleProducts([]);
@@ -121,6 +65,20 @@ const floorHeight = useMemo(
     }, 100);
 
     return () => clearTimeout(timer);
+  }, [products]);
+
+  // Handle window resize to update product positions
+  useEffect(() => {
+    const handleResize = () => {
+      // Force re-render when screen size changes
+      setVisibleProducts([]);
+      setTimeout(() => {
+        setVisibleProducts(products);
+      }, 100);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [products]);
 
   // Handle scroll for footer visibility
@@ -289,21 +247,19 @@ const floorHeight = useMemo(
         <div className={`absolute inset-0 ${viewMode === 'floor' ? 'bg-gradient-to-b from-gray-50/30 to-white' : 'bg-white'}`}></div>
         
         {viewMode === 'floor' ? (
-  <div
-    className="relative w-full px-0"
-    style={{ height: floorHeight, marginBottom: '15px' }}
-  >
-    {visibleProducts.map((product) => (
-      <ProductItem
-        key={product.id}
-        product={product}
-        onAddToCart={onAddToCart}
-        onProductClick={onProductClick}
-        onHover={handleProductHover}
-      />
-    ))}
-  </div>
-) : (
+          /* Products scattered on floor with luxury spacing */
+          <div className="relative w-full px-0" style={{ height: 'calc(150vh - 60px)', marginBottom: '15px' }}>
+            {visibleProducts.map((product) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                onAddToCart={onAddToCart}
+                onProductClick={onProductClick}
+                onHover={handleProductHover}
+              />
+            ))}
+          </div>
+        ) : (
           /* Grid layout */
           <div className="px-0" style={{ marginBottom: '15px' }}>
             <ProductGrid
