@@ -232,7 +232,7 @@ const [quantity, setQuantity] = useState(1);
   className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 cursor-pointer"
 >
   <img
-    src="/logo/1a.jpg"
+    src="/logo/13 (1).png"
     alt="Notorious Y2"
     className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain"
   />
