@@ -1,5 +1,5 @@
 // src/components/ProductFloor.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ShoppingBag, User, Grid3X3, Sparkles, Instagram, Heart } from 'lucide-react';
 import { Product, CartItem } from '../types/Product';
 import ProductItem from './ProductItem';
@@ -68,6 +68,7 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
   const [showFooter, setShowFooter] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+
   const [isMobile, setIsMobile] = useState(
   typeof window !== 'undefined' ? window.innerWidth < 768 : false
 );
@@ -271,19 +272,21 @@ const floorHeight = useMemo(
         <div className={`absolute inset-0 ${viewMode === 'floor' ? 'bg-gradient-to-b from-gray-50/30 to-white' : 'bg-white'}`}></div>
         
         {viewMode === 'floor' ? (
-          /* Products scattered on floor with luxury spacing */
-          <div className="relative w-full px-0" style={{ height: 'calc(150vh - 60px)', marginBottom: '15px' }}>
-            {visibleProducts.map((product) => (
-              <ProductItem
-                key={product.id}
-                product={product}
-                onAddToCart={onAddToCart}
-                onProductClick={onProductClick}
-                onHover={handleProductHover}
-              />
-            ))}
-          </div>
-        ) : (
+  <div
+    className="relative w-full px-0"
+    style={{ height: floorHeight, marginBottom: '15px' }}
+  >
+    {visibleProducts.map((product) => (
+      <ProductItem
+        key={product.id}
+        product={product}
+        onAddToCart={onAddToCart}
+        onProductClick={onProductClick}
+        onHover={handleProductHover}
+      />
+    ))}
+  </div>
+) : (
           /* Grid layout */
           <div className="px-0" style={{ marginBottom: '15px' }}>
             <ProductGrid
