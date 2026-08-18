@@ -8,6 +8,7 @@ import CurrencySelector from './CurrencySelector';
 import { Currency } from '../hooks/useCurrency';
 import { User as UserType } from '../hooks/useAuth';
 import { Product as ProductType } from '../types/Product';
+import { getFloorHeightVh } from '../data/products';
 
 interface ProductFloorProps {
   products: Product[];
@@ -52,6 +53,7 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
   const [showFooter, setShowFooter] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const floorHeight = `${getFloorHeightVh(products)}vh`;
   
   // Animate products loading one by one
   useEffect(() => {
@@ -254,7 +256,7 @@ return (
           <div
   className="relative w-full px-0"
   style={{
-    height: 'calc(150vh - 60px)',
+    height: floorHeight,
     marginBottom: '15px'
   }}
 >
