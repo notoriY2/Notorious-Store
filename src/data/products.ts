@@ -332,7 +332,7 @@ export const products: Product[] = [
   },
   {
     id: '18',
-    name: 'White 80564 T-Shirt',
+    name: 'Y2 T-Shirt No.5',
     price: 42,
     image: '/products/20.png',
     images: [
@@ -340,42 +340,6 @@ export const products: Product[] = [
       '/products/20.png',
       '/products/20b.png',
       '/products/20c.png',
-    ],
-    position: { top: 'calc(78% - 96px)', left: '84%' },
-    mobilePosition: { top: 'calc(85% - 70px)', left: '71%' },
-    rotation: -2,
-    scale: 0.94,
-    zIndex: 5,
-    category: 'top'
-  },
-  {
-    id: '19',
-    name: 'White 80564 T-Shirt',
-    price: 42,
-    image: '/products/8.png',
-    images: [
-      '/products/10.png',
-      '/products/10-2.png',
-      '/products/10-3.png',
-      '/products/10-4.png',
-    ],
-    position: { top: 'calc(78% - 96px)', left: '84%' },
-    mobilePosition: { top: 'calc(85% - 70px)', left: '71%' },
-    rotation: -2,
-    scale: 0.94,
-    zIndex: 5,
-    category: 'top'
-  },
-  {
-    id: '20',
-    name: 'White 80564 T-Shirt',
-    price: 42,
-    image: '/products/8.png',
-    images: [
-      '/products/10.png',
-      '/products/10-2.png',
-      '/products/10-3.png',
-      '/products/10-4.png',
     ],
     position: { top: 'calc(78% - 96px)', left: '84%' },
     mobilePosition: { top: 'calc(85% - 70px)', left: '71%' },
