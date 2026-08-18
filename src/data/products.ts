@@ -23,14 +23,14 @@ export interface Product {
 export const products: Product[] = [
   {
     id: '1',
-    name: 'Red Plaid Shirt',
+    name: 'Blue Y2 Hoddie',
     price: 89,
-    image: '/products/10.jpeg',
+    image: '/products/1.png',
     images: [
-      '/products/10.jpeg',
-      '/products/10-2.jpeg',
-      '/products/10-3.jpeg',
-      '/products/10-4.jpeg',
+      '/products/1a.png',
+      '/products/1.png',
+      '/products/1b.png',
+      '/products/1c.png',
     ],
     position: { top: 'calc(15% - 72px)', left: '2%' },
     mobilePosition: { top: 'calc(10% - 70px)', left: '5%' },
