@@ -24,7 +24,7 @@ export const products: Product[] = [
   {
     id: '1',
     name: 'Blue Y2 Hoodie',
-    price: 89,
+    price: 49,
     image: '/products/1.png',
     images: [
       '/products/1a.png',
@@ -42,7 +42,7 @@ export const products: Product[] = [
   {
     id: '2',
     name: 'Y2 T-Shirt No.1',
-    price: 65,
+    price: 25,
     image: '/products/15.png',
     images: [
       '/products/15a.png',
@@ -60,7 +60,7 @@ export const products: Product[] = [
   {
     id: '3',
     name: 'Y2 T-Shirt No.13',
-    price: 45,
+    price: 28,
     image: '/products/36.png',
     images: [
       '/products/36a.png',
@@ -79,7 +79,7 @@ export const products: Product[] = [
   {
     id: '4',
     name: 'Pink Y2 Hoodie',
-    price: 45,
+    price: 49,
     image: '/products/2.png',
     images: [
       '/products/2a.png',
@@ -97,7 +97,7 @@ export const products: Product[] = [
   {
     id: '5',
     name: 'Y2 T-Shirt No.2',
-    price: 125,
+    price: 25,
     image: '/products/23.png',
     images: [
       '/products/23a.png',
@@ -115,7 +115,7 @@ export const products: Product[] = [
   {
     id: '6',
     name: 'Y2 T-Shirt No.14',
-    price: 45,
+    price: 28,
     image: '/products/28.png',
     images: [
       '/products/28a.png',
@@ -133,7 +133,7 @@ export const products: Product[] = [
   {
     id: '7',
     name: 'Y2 T-Shirt No.15',
-    price: 35,
+    price: 28,
     image: '/products/27.png',
     images: [
       '/products/27a.png',
@@ -151,7 +151,7 @@ export const products: Product[] = [
   {
     id: '8',
     name: 'Y2 T-Shirt No.3',
-    price: 75,
+    price: 25,
     image: '/products/25.png',
     images: [
       '/products/25a.png',
@@ -169,7 +169,7 @@ export const products: Product[] = [
   {
     id: '9',
     name: 'Brown Y2 Hoodie',
-    price: 85,
+    price: 49,
     image: '/products/7.png',
     images: [
       '/products/7a.png',
@@ -187,7 +187,7 @@ export const products: Product[] = [
   {
     id: '10',
     name: 'Y2 T-Shirt No.16',
-    price: 68,
+    price: 28,
     image: '/products/29.png',
     images: [
       '/products/29a.png',
@@ -206,7 +206,7 @@ export const products: Product[] = [
   {
     id: '11',
     name: 'Orange Y2 Hoodie',
-    price: 40,
+    price: 49,
     image: '/products/8.png',
     images: [
       '/products/8a.png',
@@ -225,7 +225,7 @@ export const products: Product[] = [
   {
     id: '13',
     name: 'Red Y2 Hoodie',
-    price: 78,
+    price: 49,
     image: '/products/6.png',
     images: [
       '/products/6a.png',
@@ -243,7 +243,7 @@ export const products: Product[] = [
   {
     id: '14',
     name: 'Y2 T-Shirt No.17',
-    price: 58,
+    price: 28,
     image: '/products/32.png',
     images: [
       '/products/32a.png',
@@ -261,7 +261,7 @@ export const products: Product[] = [
   {
     id: '15',
     name: 'Y2 T-Shirt No.4',
-    price: 55,
+    price: 25,
     image: '/products/19.png',
     images: [
       '/products/19a.png',
@@ -279,7 +279,7 @@ export const products: Product[] = [
   {
     id: '16',
     name: 'Y2 T-Shirt No.18',
-    price: 92,
+    price: 28,
     image: '/products/31.png',
     images: [
       '/products/31a.png',
@@ -297,7 +297,7 @@ export const products: Product[] = [
   {
     id: '17',
     name: 'Blue Y2 Hoodie',
-    price: 65,
+    price: 49,
     image: '/products/3.png',
     images: [
       '/products/3a.png',
@@ -315,7 +315,7 @@ export const products: Product[] = [
   {
     id: '18',
     name: 'Y2 T-Shirt No.5',
-    price: 42,
+    price: 25,
     image: '/products/20.png',
     images: [
       '/products/20a.png',
@@ -338,7 +338,7 @@ export const products: Product[] = [
   {
     id: '19',
     name: 'Y2 T-Shirt No.6',
-    price: 64,
+    price: 25,
     image: '/products/17.png',
     images: [
       '/products/17a.png',
@@ -356,7 +356,7 @@ export const products: Product[] = [
   {
     id: '20',
     name: 'Y2 T-Shirt No.19',
-    price: 82,
+    price: 28,
     image: '/products/30.png',
     images: [
       '/products/30a.png',
@@ -374,7 +374,7 @@ export const products: Product[] = [
   {
     id: '21',
     name: 'Green Y2 Hoodie',
-    price: 52,
+    price: 49,
     image: '/products/9.png',
     images: [
       '/products/9a.png',
@@ -392,7 +392,7 @@ export const products: Product[] = [
   {
     id: '22',
     name: 'Y2 T-Shirt No.20',
-    price: 88,
+    price: 28,
     image: '/products/33.png',
     images: [
       '/products/33a.png',
@@ -410,7 +410,7 @@ export const products: Product[] = [
   {
     id: '23',
     name: 'Y2 T-Shirt No.7',
-    price: 59,
+    price: 25,
     image: '/products/22.png',
     images: [
       '/products/22a.png',
@@ -428,7 +428,7 @@ export const products: Product[] = [
   {
     id: '24',
     name: 'Yellow Y2 Hoodie',
-    price: 48,
+    price: 49,
     image: '/products/12.png',
     images: [
       '/products/12a.png',
@@ -451,7 +451,7 @@ export const products: Product[] = [
   {
     id: '25',
     name: 'Y2 T-Shirt No.21',
-    price: 79,
+    price: 28,
     image: '/products/35.png',
     images: [
       '/products/35a.png',
@@ -469,7 +469,7 @@ export const products: Product[] = [
   {
     id: '26',
     name: 'Light Pink Y2 Hoodie',
-    price: 62,
+    price: 49,
     image: '/products/10.png',
     images: [
       '/products/10a.png',
@@ -487,7 +487,7 @@ export const products: Product[] = [
   {
     id: '27',
     name: 'Y2 T-Shirt N0.8',
-    price: 46,
+    price: 25,
     image: '/products/16.png',
     images: [
       '/products/16a.png',
@@ -505,7 +505,7 @@ export const products: Product[] = [
   {
     id: '28',
     name: 'Black Y2 Hoodie',
-    price: 95,
+    price: 49,
     image: '/products/11.png',
     images: [
       '/products/11a.png',
@@ -523,7 +523,7 @@ export const products: Product[] = [
   {
     id: '29',
     name: 'Y2 T-Shirt No.22',
-    price: 57,
+    price: 28,
     image: '/products/34.png',
     images: [
       '/products/34a.png',
@@ -541,7 +541,7 @@ export const products: Product[] = [
   {
     id: '30',
     name: 'Y2 T-Shirt No.9',
-    price: 43,
+    price: 25,
     image: '/products/24.png',
     images: [
       '/products/24a.png',
@@ -564,7 +564,7 @@ export const products: Product[] = [
   {
     id: '31',
     name: 'Cream Y2 Hoodie',
-    price: 86,
+    price: 49,
     image: '/products/14.png',
     images: [
       '/products/14a.png',
@@ -582,7 +582,7 @@ export const products: Product[] = [
   {
     id: '32',
     name: 'Y2 T-Shirt No.10',
-    price: 54,
+    price: 25,
     image: '/products/26.png',
     images: [
       '/products/26a.png',
@@ -618,7 +618,7 @@ export const products: Product[] = [
   {
     id: '34',
     name: 'Y2 T-Shirt No.23',
-    price: 99,
+    price: 28,
     image: '/products/37.png',
     images: [
       '/products/37a.png',
@@ -636,7 +636,7 @@ export const products: Product[] = [
   {
     id: '35',
     name: 'Y2 T-Shirt No.24',
-    price: 68,
+    price: 28,
     image: '/products/38.png',
     images: [
       '/products/38a.png',
@@ -654,7 +654,7 @@ export const products: Product[] = [
   {
     id: '36',
     name: 'Y2 T-Shirt No.11',
-    price: 44,
+    price: 25,
     image: '/products/18.png',
     images: [
       '/products/18a.png',
@@ -677,7 +677,7 @@ export const products: Product[] = [
   {
     id: '37',
     name: 'Gray Y2 Hoodie',
-    price: 91,
+    price: 49,
     image: '/products/5.png',
     images: [
       '/products/5a.png',
@@ -695,7 +695,7 @@ export const products: Product[] = [
   {
     id: '38',
     name: 'Y2 T-Shirt No.25',
-    price: 61,
+    price: 28,
     image: '/products/21.png',
     images: [
       '/products/21a.png',
@@ -713,7 +713,7 @@ export const products: Product[] = [
   {
     id: '39',
     name: 'Purple Y2 Hoodie',
-    price: 53,
+    price: 49,
     image: '/products/4.png',
     images: [
       '/products/4a.png',
