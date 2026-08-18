@@ -3,8 +3,8 @@ export interface Product {
   id: string;
   name: string;
   price: number;
-  image: string;        // keep this — used for grid thumbnails / cards
-  images: string[];     // NEW — the 4 photos shown in the product detail gallery
+  image: string;
+  images: string[];
   position: {
     top: string;
     left: string;
@@ -221,25 +221,7 @@ export const products: Product[] = [
     zIndex: 9,
     category: 'accessory'
   },
-  /*{
-    id: '12',
-    name: 'Y2 T-Shirt No.',
-    price: 72,
-    image: '/products/18.png',
-    images: [
-      '/products/10.png',
-      '/products/10-2.png',
-      '/products/10-3.png',
-      '/products/10-4.png',
-    ],
-    position: { top: 'calc(72vh - 96px)', left: '88%' },
-    mobilePosition: { top: 'calc(82.5vh - 70px)', left: '71%' },
-    rotation: 6,
-    scale: 0.87,
-    zIndex: 3,
-    category: 'bottom'
-  },
-  */
+
   {
     id: '13',
     name: 'Red Y2 Hoodie',
@@ -349,13 +331,14 @@ export const products: Product[] = [
     category: 'top'
   },
 
-  // ---- Extended range: products 19–40 (continues the same 6-col desktop /
-  // 3-col mobile grid, same row spacing, jitter, rotation & category mix) ----
+  // ─────────────────────────────────────────────
+  // Products 19–24 — desktop row 4 / mobile row 7
+  // ─────────────────────────────────────────────
 
   {
     id: '19',
-    name: 'Y2 T-Shirt No.6',
-    price: 48,
+    name: 'Y2 T-Shirt No.19',
+    price: 64,
     image: '/products/4.png',
     images: [
       '/products/4a.png',
@@ -363,17 +346,17 @@ export const products: Product[] = [
       '/products/4b.png',
       '/products/4c.png',
     ],
-    position: { top: 'calc(159.5vh - 96px)', left: '2%' },
+    position: { top: 'calc(163.5vh - 96px)', left: '2%' },
     mobilePosition: { top: 'calc(150vh - 70px)', left: '5%' },
     rotation: -6,
-    scale: 0.91,
+    scale: 0.89,
     zIndex: 5,
     category: 'top'
   },
   {
     id: '20',
-    name: 'Purple Y2 Hoodie',
-    price: 95,
+    name: 'Y2 Hoodie No.3',
+    price: 82,
     image: '/products/5.png',
     images: [
       '/products/5a.png',
@@ -381,17 +364,17 @@ export const products: Product[] = [
       '/products/5b.png',
       '/products/5c.png',
     ],
-    position: { top: 'calc(166.5vh - 96px)', left: '18%' },
+    position: { top: 'calc(169.5vh - 96px)', left: '18%' },
     mobilePosition: { top: 'calc(150vh - 70px)', left: '38%' },
-    rotation: 18,
-    scale: 0.87,
+    rotation: 11,
+    scale: 0.94,
     zIndex: 4,
     category: 'top'
   },
   {
     id: '21',
-    name: 'Y2 T-Shirt No.19',
-    price: 38,
+    name: 'Y2 T-Shirt No.20',
+    price: 52,
     image: '/products/9.png',
     images: [
       '/products/9a.png',
@@ -401,15 +384,15 @@ export const products: Product[] = [
     ],
     position: { top: 'calc(162.5vh - 96px)', left: '34%' },
     mobilePosition: { top: 'calc(150vh - 70px)', left: '71%' },
-    rotation: 5,
-    scale: 0.94,
-    zIndex: 6,
+    rotation: -3,
+    scale: 0.86,
+    zIndex: 7,
     category: 'bottom'
   },
   {
     id: '22',
-    name: 'Y2 T-Shirt No.20',
-    price: 52,
+    name: 'Y2 Hoodie No.4',
+    price: 88,
     image: '/products/10.png',
     images: [
       '/products/10a.png',
@@ -417,17 +400,17 @@ export const products: Product[] = [
       '/products/10b.png',
       '/products/10c.png',
     ],
-    position: { top: 'calc(167.5vh - 96px)', left: '50%' },
+    position: { top: 'calc(172.5vh - 96px)', left: '50%' },
     mobilePosition: { top: 'calc(172.5vh - 70px)', left: '5%' },
     rotation: -9,
-    scale: 0.86,
+    scale: 0.91,
     zIndex: 3,
     category: 'top'
   },
   {
     id: '23',
-    name: 'Black Y2 Hoodie',
-    price: 88,
+    name: 'Y2 T-Shirt No.21',
+    price: 59,
     image: '/products/11.png',
     images: [
       '/products/11a.png',
@@ -435,17 +418,17 @@ export const products: Product[] = [
       '/products/11b.png',
       '/products/11c.png',
     ],
-    position: { top: 'calc(162.5vh - 96px)', left: '66%' },
+    position: { top: 'calc(165vh - 96px)', left: '66%' },
     mobilePosition: { top: 'calc(172.5vh - 70px)', left: '38%' },
-    rotation: -28,
-    scale: 0.74,
-    zIndex: 8,
-    category: 'accessory'
+    rotation: 7,
+    scale: 0.84,
+    zIndex: 6,
+    category: 'top'
   },
   {
     id: '24',
-    name: 'Y2 T-Shirt No.21',
-    price: 44,
+    name: 'Y2 T-Shirt No.22',
+    price: 48,
     image: '/products/12.png',
     images: [
       '/products/12a.png',
@@ -453,17 +436,22 @@ export const products: Product[] = [
       '/products/12b.png',
       '/products/12c.png',
     ],
-    position: { top: 'calc(161.5vh - 96px)', left: '82%' },
+    position: { top: 'calc(166.5vh - 96px)', left: '82%' },
     mobilePosition: { top: 'calc(172.5vh - 70px)', left: '71%' },
-    rotation: 7,
-    scale: 0.89,
+    rotation: 14,
+    scale: 0.8,
     zIndex: 2,
-    category: 'bottom'
+    category: 'accessory'
   },
+
+  // ─────────────────────────────────────────────
+  // Products 25–30 — desktop row 5 / mobile row 9
+  // ─────────────────────────────────────────────
+
   {
     id: '25',
-    name: 'Y2 T-Shirt No.22',
-    price: 58,
+    name: 'Y2 Hoodie No.5',
+    price: 79,
     image: '/products/13.png',
     images: [
       '/products/13a.png',
@@ -471,17 +459,17 @@ export const products: Product[] = [
       '/products/13b.png',
       '/products/13c.png',
     ],
-    position: { top: 'calc(206vh - 96px)', left: '8%' },
+    position: { top: 'calc(210vh - 96px)', left: '4%' },
     mobilePosition: { top: 'calc(195vh - 70px)', left: '5%' },
-    rotation: -11,
-    scale: 0.93,
-    zIndex: 5,
+    rotation: -14,
+    scale: 0.92,
+    zIndex: 4,
     category: 'top'
   },
   {
     id: '26',
     name: 'Y2 T-Shirt No.23',
-    price: 41,
+    price: 62,
     image: '/products/14.png',
     images: [
       '/products/14a.png',
@@ -489,17 +477,17 @@ export const products: Product[] = [
       '/products/14b.png',
       '/products/14c.png',
     ],
-    position: { top: 'calc(213vh - 96px)', left: '24%' },
+    position: { top: 'calc(216vh - 96px)', left: '20%' },
     mobilePosition: { top: 'calc(195vh - 70px)', left: '38%' },
-    rotation: 22,
-    scale: 0.83,
+    rotation: 18,
+    scale: 0.87,
     zIndex: 7,
-    category: 'accessory'
+    category: 'bottom'
   },
   {
     id: '27',
-    name: 'Grey Y2 Hoodie',
-    price: 72,
+    name: 'Y2 T-Shirt No.24',
+    price: 46,
     image: '/products/16.png',
     images: [
       '/products/16a.png',
@@ -507,18 +495,17 @@ export const products: Product[] = [
       '/products/16b.png',
       '/products/16c.png',
     ],
-    position: { top: 'calc(209vh - 96px)', left: '40%' },
+    position: { top: 'calc(208vh - 96px)', left: '36%' },
     mobilePosition: { top: 'calc(195vh - 70px)', left: '71%' },
-    rotation: 3,
-    scale: 0.96,
-    zIndex: 4,
-    category: 'top',
-    soldOut: true
+    rotation: -5,
+    scale: 0.82,
+    zIndex: 3,
+    category: 'top'
   },
   {
     id: '28',
-    name: 'Y2 T-Shirt No.24',
-    price: 49,
+    name: 'Y2 Hoodie No.6',
+    price: 95,
     image: '/products/17.png',
     images: [
       '/products/17a.png',
@@ -526,35 +513,17 @@ export const products: Product[] = [
       '/products/17b.png',
       '/products/17c.png',
     ],
-    position: { top: 'calc(214vh - 96px)', left: '56%' },
+    position: { top: 'calc(220.5vh - 96px)', left: '50%' },
     mobilePosition: { top: 'calc(217.5vh - 70px)', left: '5%' },
-    rotation: -6,
-    scale: 0.9,
-    zIndex: 3,
-    category: 'bottom'
+    rotation: 5,
+    scale: 0.95,
+    zIndex: 6,
+    category: 'top'
   },
   {
     id: '29',
     name: 'Y2 T-Shirt No.25',
-    price: 63,
-    image: '/products/18.png',
-    images: [
-      '/products/18a.png',
-      '/products/18.png',
-      '/products/18b.png',
-      '/products/18c.png',
-    ],
-    position: { top: 'calc(209vh - 96px)', left: '72%' },
-    mobilePosition: { top: 'calc(217.5vh - 70px)', left: '38%' },
-    rotation: -31,
-    scale: 0.72,
-    zIndex: 9,
-    category: 'accessory'
-  },
-  {
-    id: '30',
-    name: 'Y2 T-Shirt No.26',
-    price: 55,
+    price: 57,
     image: '/products/21.png',
     images: [
       '/products/21a.png',
@@ -562,17 +531,17 @@ export const products: Product[] = [
       '/products/21b.png',
       '/products/21c.png',
     ],
-    position: { top: 'calc(208vh - 96px)', left: '88%' },
-    mobilePosition: { top: 'calc(217.5vh - 70px)', left: '71%' },
-    rotation: 10,
-    scale: 0.85,
-    zIndex: 4,
+    position: { top: 'calc(212.5vh - 96px)', left: '66%' },
+    mobilePosition: { top: 'calc(217.5vh - 70px)', left: '38%' },
+    rotation: -16,
+    scale: 0.9,
+    zIndex: 5,
     category: 'bottom'
   },
   {
-    id: '31',
-    name: 'White Y2 Hoodie',
-    price: 82,
+    id: '30',
+    name: 'Y2 T-Shirt No.26',
+    price: 43,
     image: '/products/22.png',
     images: [
       '/products/22a.png',
@@ -580,17 +549,22 @@ export const products: Product[] = [
       '/products/22b.png',
       '/products/22c.png',
     ],
-    position: { top: 'calc(252.5vh - 96px)', left: '4%' },
-    mobilePosition: { top: 'calc(240vh - 70px)', left: '5%' },
-    rotation: -9,
-    scale: 0.92,
-    zIndex: 5,
-    category: 'top'
+    position: { top: 'calc(214vh - 96px)', left: '82%' },
+    mobilePosition: { top: 'calc(217.5vh - 70px)', left: '71%' },
+    rotation: 9,
+    scale: 0.78,
+    zIndex: 8,
+    category: 'accessory'
   },
+
+  // ─────────────────────────────────────────────
+  // Products 31–36 — desktop row 6 / mobile row 11
+  // ─────────────────────────────────────────────
+
   {
-    id: '32',
-    name: 'Y2 T-Shirt No.27',
-    price: 39,
+    id: '31',
+    name: 'Y2 Hoodie No.7',
+    price: 86,
     image: '/products/24.png',
     images: [
       '/products/24a.png',
@@ -598,17 +572,17 @@ export const products: Product[] = [
       '/products/24b.png',
       '/products/24c.png',
     ],
-    position: { top: 'calc(259.5vh - 96px)', left: '20%' },
-    mobilePosition: { top: 'calc(240vh - 70px)', left: '38%' },
-    rotation: 14,
-    scale: 0.88,
-    zIndex: 3,
+    position: { top: 'calc(253vh - 96px)', left: '2%' },
+    mobilePosition: { top: 'calc(240vh - 70px)', left: '5%' },
+    rotation: -8,
+    scale: 0.94,
+    zIndex: 4,
     category: 'top'
   },
   {
-    id: '33',
-    name: 'Y2 T-Shirt No.28',
-    price: 46,
+    id: '32',
+    name: 'Y2 T-Shirt No.27',
+    price: 54,
     image: '/products/26.png',
     images: [
       '/products/26a.png',
@@ -616,18 +590,17 @@ export const products: Product[] = [
       '/products/26b.png',
       '/products/26c.png',
     ],
-    position: { top: 'calc(255.5vh - 96px)', left: '36%' },
-    mobilePosition: { top: 'calc(240vh - 70px)', left: '71%' },
-    rotation: 1,
-    scale: 0.95,
-    zIndex: 6,
-    category: 'bottom',
-    soldOut: true
+    position: { top: 'calc(259vh - 96px)', left: '18%' },
+    mobilePosition: { top: 'calc(240vh - 70px)', left: '38%' },
+    rotation: 13,
+    scale: 0.86,
+    zIndex: 7,
+    category: 'bottom'
   },
   {
-    id: '34',
-    name: 'Y2 T-Shirt No.29',
-    price: 67,
+    id: '33',
+    name: 'Y2 T-Shirt No.28',
+    price: 49,
     image: '/products/30.png',
     images: [
       '/products/30a.png',
@@ -635,17 +608,17 @@ export const products: Product[] = [
       '/products/30b.png',
       '/products/30c.png',
     ],
-    position: { top: 'calc(260.5vh - 96px)', left: '52%' },
-    mobilePosition: { top: 'calc(262.5vh - 70px)', left: '5%' },
-    rotation: -4,
-    scale: 0.87,
-    zIndex: 4,
+    position: { top: 'calc(252vh - 96px)', left: '34%' },
+    mobilePosition: { top: 'calc(240vh - 70px)', left: '71%' },
+    rotation: -11,
+    scale: 0.9,
+    zIndex: 2,
     category: 'top'
   },
   {
-    id: '35',
-    name: 'Yellow Y2 Hoodie',
-    price: 59,
+    id: '34',
+    name: 'Y2 Hoodie No.8',
+    price: 99,
     image: '/products/33.png',
     images: [
       '/products/33a.png',
@@ -653,17 +626,17 @@ export const products: Product[] = [
       '/products/33b.png',
       '/products/33c.png',
     ],
-    position: { top: 'calc(255.5vh - 96px)', left: '68%' },
-    mobilePosition: { top: 'calc(262.5vh - 70px)', left: '38%' },
-    rotation: -24,
-    scale: 0.76,
-    zIndex: 8,
-    category: 'accessory'
+    position: { top: 'calc(263.5vh - 96px)', left: '50%' },
+    mobilePosition: { top: 'calc(262.5vh - 70px)', left: '5%' },
+    rotation: 6,
+    scale: 0.97,
+    zIndex: 6,
+    category: 'top'
   },
   {
-    id: '36',
-    name: 'Y2 T-Shirt No.30',
-    price: 43,
+    id: '35',
+    name: 'Y2 T-Shirt No.29',
+    price: 68,
     image: '/products/34.png',
     images: [
       '/products/34a.png',
@@ -671,17 +644,17 @@ export const products: Product[] = [
       '/products/34b.png',
       '/products/34c.png',
     ],
-    position: { top: 'calc(254.5vh - 96px)', left: '84%' },
-    mobilePosition: { top: 'calc(262.5vh - 70px)', left: '71%' },
-    rotation: 8,
-    scale: 0.9,
-    zIndex: 2,
+    position: { top: 'calc(255.5vh - 96px)', left: '66%' },
+    mobilePosition: { top: 'calc(262.5vh - 70px)', left: '38%' },
+    rotation: -7,
+    scale: 0.88,
+    zIndex: 5,
     category: 'bottom'
   },
   {
-    id: '37',
-    name: 'Y2 T-Shirt No.31',
-    price: 51,
+    id: '36',
+    name: 'Y2 T-Shirt No.30',
+    price: 44,
     image: '/products/35.png',
     images: [
       '/products/35a.png',
@@ -689,17 +662,22 @@ export const products: Product[] = [
       '/products/35b.png',
       '/products/35c.png',
     ],
-    position: { top: 'calc(299vh - 96px)', left: '2%' },
-    mobilePosition: { top: 'calc(285vh - 70px)', left: '5%' },
-    rotation: -7,
-    scale: 0.93,
-    zIndex: 5,
-    category: 'top'
+    position: { top: 'calc(257vh - 96px)', left: '82%' },
+    mobilePosition: { top: 'calc(262.5vh - 70px)', left: '71%' },
+    rotation: 16,
+    scale: 0.81,
+    zIndex: 3,
+    category: 'accessory'
   },
+
+  // ─────────────────────────────────────────────
+  // Products 37–40 — desktop row 7 / mobile row 13
+  // ─────────────────────────────────────────────
+
   {
-    id: '38',
-    name: 'Green Y2 Hoodie',
-    price: 76,
+    id: '37',
+    name: 'Y2 Hoodie No.9',
+    price: 91,
     image: '/products/37.png',
     images: [
       '/products/37a.png',
@@ -707,17 +685,17 @@ export const products: Product[] = [
       '/products/37b.png',
       '/products/37c.png',
     ],
-    position: { top: 'calc(306vh - 96px)', left: '18%' },
-    mobilePosition: { top: 'calc(285vh - 70px)', left: '38%' },
-    rotation: 19,
-    scale: 0.84,
-    zIndex: 3,
+    position: { top: 'calc(299.5vh - 96px)', left: '6%' },
+    mobilePosition: { top: 'calc(285vh - 70px)', left: '5%' },
+    rotation: -12,
+    scale: 0.93,
+    zIndex: 5,
     category: 'top'
   },
   {
-    id: '39',
-    name: 'Y2 T-Shirt No.32',
-    price: 47,
+    id: '38',
+    name: 'Y2 T-Shirt No.31',
+    price: 61,
     image: '/products/38.png',
     images: [
       '/products/38a.png',
@@ -725,17 +703,17 @@ export const products: Product[] = [
       '/products/38b.png',
       '/products/38c.png',
     ],
-    position: { top: 'calc(302vh - 96px)', left: '34%' },
-    mobilePosition: { top: 'calc(285vh - 70px)', left: '71%' },
-    rotation: -2,
-    scale: 0.96,
-    zIndex: 6,
+    position: { top: 'calc(305vh - 96px)', left: '22%' },
+    mobilePosition: { top: 'calc(285vh - 70px)', left: '38%' },
+    rotation: 20,
+    scale: 0.85,
+    zIndex: 7,
     category: 'bottom'
   },
   {
-    id: '40',
-    name: 'Y2 T-Shirt No.33',
-    price: 40,
+    id: '39',
+    name: 'Y2 T-Shirt No.32',
+    price: 53,
     image: '/products/39.png',
     images: [
       '/products/39a.png',
@@ -743,11 +721,29 @@ export const products: Product[] = [
       '/products/39b.png',
       '/products/39c.png',
     ],
-    position: { top: 'calc(307vh - 96px)', left: '50%' },
-    mobilePosition: { top: 'calc(307.5vh - 70px)', left: '5%' },
-    rotation: 33,
-    scale: 0.78,
-    zIndex: 9,
-    category: 'accessory'
+    position: { top: 'calc(298vh - 96px)', left: '52%' },
+    mobilePosition: { top: 'calc(285vh - 70px)', left: '71%' },
+    rotation: -4,
+    scale: 0.89,
+    zIndex: 4,
+    category: 'top'
+  },
+  {
+    id: '40',
+    name: 'Y2 Hoodie No.10',
+    price: 105,
+    image: '/products/40.png',
+    images: [
+      '/products/40a.png',
+      '/products/40.png',
+      '/products/40b.png',
+      '/products/40c.png',
+    ],
+    position: { top: 'calc(310vh - 96px)', left: '82%' },
+    mobilePosition: { top: 'calc(285vh - 70px)', left: '71%' },
+    rotation: 10,
+    scale: 0.96,
+    zIndex: 6,
+    category: 'top'
   }
 ];
