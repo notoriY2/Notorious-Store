@@ -157,11 +157,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
   const getProductFeatures = (product: Product) => {
     if (product.category === 'top') {
       return [
-        '100% Cotton',
-        'Regular Fit',
-        'Machine Washable',
-        'Imported',
-        'Classic Design'
+        'Heavyweight Cotton',
+'Waist-Length Fit',
+'Relaxed Fit',
+'Premium Construction',
+'Everyday Streetwear'
       ];
     } else if (product.category === 'bottom') {
       return [
