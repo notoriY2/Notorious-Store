@@ -41,7 +41,7 @@ export const products: Product[] = [
   },
   {
     id: '2',
-    name: 'Y2 T-Shirt',
+    name: 'Y2 T-Shirt No.1',
     price: 65,
     image: '/products/15.png',
     images: [
@@ -96,7 +96,7 @@ export const products: Product[] = [
   },
   {
     id: '5',
-    name: 'Y2 T-Shirt',
+    name: 'Y2 T-Shirt No.2',
     price: 125,
     image: '/products/23.png',
     images: [
@@ -132,7 +132,7 @@ export const products: Product[] = [
   },
   {
     id: '7',
-    name: 'Pink Studded Belt',
+    name: 'Y2 T-Shirt',
     price: 35,
     image: '/products/27.png',
     images: [
@@ -150,9 +150,9 @@ export const products: Product[] = [
   },
   {
     id: '8',
-    name: 'Blue Plaid Shorts',
+    name: 'Y2 T-Shirt No.3',
     price: 75,
-    image: '/products/24.png',
+    image: '/products/25.png',
     images: [
       '/products/10.png',
       '/products/10-2.png',
