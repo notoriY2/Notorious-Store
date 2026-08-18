@@ -1,3 +1,4 @@
+// src/components/ProductGrid.tsx
 import React from 'react';
 import { Product } from '../types/Product';
 
