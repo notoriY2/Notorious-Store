@@ -10,9 +10,9 @@ interface ProductGridProps {
   onHover: (product: Product | null) => void;
 }
 
-const ProductGrid: React.FC<ProductGridProps> = ({ 
-  products, 
-  onAddToCart, 
+const ProductGrid: React.FC<ProductGridProps> = ({
+  products,
+  onAddToCart,
   onProductClick,
   formatPrice,
   onHover
@@ -28,17 +28,22 @@ const ProductGrid: React.FC<ProductGridProps> = ({
             onMouseEnter={() => onHover(product)}
             onMouseLeave={() => onHover(null)}
           >
-            <div className="bg-white overflow-hidden p-2 sm:p-4 md:p-8" style={{ aspectRatio: '1/1.6' }}>
+            <div
+              className="relative bg-white overflow-hidden p-2 sm:p-4 md:p-8"
+              style={{ aspectRatio: '1/1.6' }}
+            >
+              {/* NORMAL: first image in images[] — e.g. /products/1a.png */}
               <img
-                src={product.image}
+                src={product.images?.[0] || product.image}
                 alt={product.name}
-                className="w-full h-full object-cover transition-opacity duration-300"
+                className="absolute inset-0 w-full h-full object-cover p-2 sm:p-4 md:p-8 opacity-100 group-hover:opacity-0 transition-opacity duration-300"
               />
-              {/* Secondary image overlay on hover */}
+
+              {/* HOVER: product.image — e.g. /products/1.png */}
               <img
                 src={product.image}
-                alt={`${product.name} - Secondary`}
-                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2 sm:p-4 md:p-8"
+                alt={`${product.name} - Original`}
+                className="absolute inset-0 w-full h-full object-cover p-2 sm:p-4 md:p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               />
             </div>
           </div>
