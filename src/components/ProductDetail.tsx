@@ -111,15 +111,18 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
 
   // Product images - exact dimensions 710x860px
   const getProductImages = () => {
-    const selectedColorData = colors.find(c => c.name === selectedColor);
-    const baseImage = selectedColorData?.image || product.image;
-    return [
-      baseImage, // Hero image
-      baseImage, // Secondary image
-      baseImage, // Thumbnail 1
-      baseImage, // Thumbnail 2
-    ];
-  };
+  // Use the product's real image set; fall back to repeating
+  // the single `image` if a product hasn't been given 4 images yet.
+  if (product.images && product.images.length > 0) {
+    // Pad to 4 if fewer than 4 are provided, so the layout doesn't break
+    const imgs = [...product.images];
+    while (imgs.length < 4) {
+      imgs.push(product.images[imgs.length % product.images.length]);
+    }
+    return imgs.slice(0, 4);
+  }
+  return [product.image, product.image, product.image, product.image];
+};
 
   const productImages = getProductImages();
 
