@@ -52,6 +52,24 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
   const [showFooter, setShowFooter] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const floorHeight = `${Math.max(
+  ...products.map((product) => {
+    const topValue = product.position?.top || '100vh';
+
+    const matches = topValue.match(/\d+/g);
+
+    if (!matches || matches.length === 0) {
+      return 100;
+    }
+
+    return Math.max(...matches.map(Number));
+  }),
+  100
+) + 30}vh`;
+
+const handleProductHover = (product: Product | null) => {
+  setHoveredProduct(product);
+};
 
   // Animate products loading one by one
   useEffect(() => {
@@ -108,7 +126,10 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden" onMouseMove={handleMouseMove}>
+    <div
+  className="min-h-screen bg-white relative overflow-x-hidden"
+  onMouseMove={handleMouseMove}
+>
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white bg-opacity-95 backdrop-blur-sm border-b border-gray-100 px-2 sm:px-4 md:px-6">
         <div className="flex items-center justify-between py-2 sm:py-4 md:py-6 max-w-7xl mx-auto">
@@ -248,7 +269,13 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
         
         {viewMode === 'floor' ? (
           /* Products scattered on floor with luxury spacing */
-          <div className="relative w-full px-0" style={{ height: 'calc(150vh - 60px)', marginBottom: '15px' }}>
+          <div
+  className="relative w-full px-0"
+  style={{
+    height: floorHeight,
+    marginBottom: '15px'
+  }}
+>
             {visibleProducts.map((product) => (
               <ProductItem
                 key={product.id}
