@@ -63,6 +63,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
   const wishlistCount = wishlistItems.length;
   const [selectedSize, setSelectedSize] = useState(product?.category === 'top' ? 'MEDIUM' : '30');
   const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState('Regent St Blue');
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [expandedSection, setExpandedSection] = useState<string | null>('description');
@@ -72,12 +73,41 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
   const [addToCartSuccess, setAddToCartSuccess] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
+  // Initialize selected size based on product category
+  React.useEffect(() => {
+    if (product) {
+      setSelectedSize(product.category === 'top' ? 'MEDIUM' : '30');
+      setSelectedColor('Regent St Blue');
+    }
+  }, [product]);
+
   // Track mouse position for tooltip
   const handleMouseMove = (e: React.MouseEvent) => {
     setMousePosition({ x: e.clientX, y: e.clientY });
   };
 
   if (!isOpen || !product) return null;
+
+  const colors = [
+    { name: 'Regent St Blue', color: '#4A90E2', image: product.image },
+    { name: 'Forest Green', color: '#228B22', image: product.image },
+    { name: 'Burgundy Red', color: '#800020', image: product.image }
+  ];
+
+  // Size availability logic - some sizes/colors can be sold out
+  const getSizeAvailability = (size: string) => {
+    // Mock availability logic - you can customize this
+    if (product.category === 'top') {
+      return !(size === 'MEDIUM' && selectedColor === 'Forest Green'); // Medium Forest Green sold out
+    } else {
+      return !(size === '32' && selectedColor === 'Burgundy Red'); // Size 32 Burgundy Red sold out
+    }
+  };
+
+  const getColorAvailability = (color: string) => {
+    // Mock availability logic
+    return !(color === 'Forest Green' && selectedSize === 'MEDIUM');
+  };
 
   // Product images - exact dimensions 710x860px
   const getProductImages = () => {
@@ -167,7 +197,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
     await new Promise(resolve => setTimeout(resolve, 300));
     
     for (let i = 0; i < quantity; i++) {
-      onAddToCart(product, selectedSize);
+      onAddToCart(product, selectedSize, selectedColor);
     }
     
     // Show success animation
@@ -183,6 +213,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
 
   const handleWishlistToggle = (productToToggle: Product) => {
     onToggleWishlist(productToToggle);
+  };
+
+  const handleColorChange = (colorName: string) => {
+    setSelectedColor(colorName);
   };
 
   const handleProductClick = (clickedProduct: any) => {
@@ -394,6 +428,26 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
                 </ul>
               </div>
 
+              {/* Color Selection */}
+              <div>
+                <h3 className="font-light mb-3 tracking-wide text-sm md:text-base">COLOR <span className="font-normal">{selectedColor}</span></h3>
+                <div className="flex space-x-3 mb-2">
+                  {colors.map((colorOption) => (
+                    <button
+                      key={colorOption.name}
+                      onClick={() => handleColorChange(colorOption.name)}
+                      className={`w-6 h-6 md:w-8 md:h-8 rounded-full transition-all duration-200 ${
+                        selectedColor === colorOption.name 
+                          ? 'ring-2 ring-black ring-offset-2' 
+                          : ''
+                      }`}
+                      style={{ backgroundColor: colorOption.color }}
+                      title={colorOption.name}
+                    />
+                  ))}
+                </div>
+              </div>
+
               {/* Size Selection */}
               <div>
                 <h3 className="font-light mb-3 tracking-wide text-sm md:text-base">SIZE <span className="font-normal">{selectedSize}</span></h3>
@@ -457,15 +511,15 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
               <div className="relative">
                 <button
                   onClick={handleAddToCart}
-                  disabled={isAddingToCart || product.soldOut || !getSizeAvailability(selectedSize)}
+                  disabled={isAddingToCart || product.soldOut || !getSizeAvailability(selectedSize) || !getColorAvailability(selectedColor)}
                   className={`w-full py-3 md:py-4 font-light tracking-[0.2em] transition-all duration-300 border text-sm md:text-base transform ${
-                    product.soldOut || !getSizeAvailability(selectedSize)
+                    product.soldOut || !getSizeAvailability(selectedSize) || !getColorAvailability(selectedColor)
                       ? 'bg-gray-100 text-gray-500 border-gray-200' 
                       : addToCartSuccess
                       ? 'bg-green-500 text-white border-green-500'
                       : 'bg-black text-white border-black hover:bg-gray-800 hover:scale-105'
                   } ${
-                    product.soldOut || !getSizeAvailability(selectedSize)
+                    product.soldOut || !getSizeAvailability(selectedSize) || !getColorAvailability(selectedColor)
                       ? 'cursor-not-allowed' 
                       : 'cursor-pointer'
                   } ${
@@ -473,7 +527,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
                   }`}
                   style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
                 >
-                  {product.soldOut || !getSizeAvailability(selectedSize)
+                  {product.soldOut || !getSizeAvailability(selectedSize) || !getColorAvailability(selectedColor)
                     ? 'SOLD OUT'
                     : addToCartSuccess 
                     ? '✓ ADDED TO BAG' 
