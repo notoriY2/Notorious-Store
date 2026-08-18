@@ -41,7 +41,7 @@ export const products: Product[] = [
   },
   {
     id: '2',
-    name: 'Shirt',
+    name: 'T-Shirt',
     price: 65,
     image: '/products/15.png',
     images: [
@@ -61,7 +61,7 @@ export const products: Product[] = [
     id: '3',
     name: 'Red 80564 T-Shirt',
     price: 45,
-    image: '/products/19.png',
+    image: '/products/36.png',
     images: [
       '/products/10.png',
       '/products/10-2.png',
@@ -170,7 +170,7 @@ export const products: Product[] = [
     id: '9',
     name: 'Striped Long Sleeve',
     price: 85,
-    image: '/products/28.png',
+    image: '/products/3.png',
     images: [
       '/products/10.png',
       '/products/10-2.png',
