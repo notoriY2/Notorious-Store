@@ -1,3 +1,4 @@
+// src/components/ProductFloor.tsx
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, User, Grid3X3, Sparkles, Instagram, Heart } from 'lucide-react';
 import { Product, CartItem } from '../types/Product';
