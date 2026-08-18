@@ -8,7 +8,6 @@ import CurrencySelector from './CurrencySelector';
 import { Currency } from '../hooks/useCurrency';
 import { User as UserType } from '../hooks/useAuth';
 import { Product as ProductType } from '../types/Product';
-import { getFloorHeightVh } from '../data/products';
 
 interface ProductFloorProps {
   products: Product[];
@@ -53,8 +52,7 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
   const [showFooter, setShowFooter] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const floorHeight = `${getFloorHeightVh(products)}vh`;
-  
+
   // Animate products loading one by one
   useEffect(() => {
     setVisibleProducts([]);
@@ -106,14 +104,11 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   };
 
   const handleProductHover = (product: Product | null) => {
-  setHoveredProduct(product);
-};
+    setHoveredProduct(product);
+  };
 
-return (
-    <div
-  className="min-h-screen bg-white relative overflow-hidden"
-  onMouseMove={handleMouseMove}
->
+  return (
+    <div className="min-h-screen bg-white relative overflow-hidden" onMouseMove={handleMouseMove}>
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white bg-opacity-95 backdrop-blur-sm border-b border-gray-100 px-2 sm:px-4 md:px-6">
         <div className="flex items-center justify-between py-2 sm:py-4 md:py-6 max-w-7xl mx-auto">
@@ -253,13 +248,7 @@ return (
         
         {viewMode === 'floor' ? (
           /* Products scattered on floor with luxury spacing */
-          <div
-  className="relative w-full px-0"
-  style={{
-    height: floorHeight,
-    marginBottom: '15px'
-  }}
->
+          <div className="relative w-full px-0" style={{ height: 'calc(150vh - 60px)', marginBottom: '15px' }}>
             {visibleProducts.map((product) => (
               <ProductItem
                 key={product.id}
