@@ -226,19 +226,37 @@ const [quantity, setQuantity] = useState(1);
           {/* Header */}
           <header className="fixed top-0 left-0 right-0 z-40 bg-white bg-opacity-95 backdrop-blur-sm border-b border-gray-100 px-2 sm:px-4 md:px-6">
             <div className="flex items-center justify-between py-2 sm:py-4 md:py-6 max-w-7xl mx-auto">
-              <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3">
-                <img
+              <a
+  href="/"
+  aria-label="Go to home"
+  className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 cursor-pointer"
+>
+  <img
     src="/logo/1a.jpg"
     alt="Notorious Y2"
     className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain"
   />
-                <h1 className="hidden sm:block text-sm sm:text-base md:text-lg lg:text-xl font-light tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] text-black" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: '100' }}>
-                  NOTORIous.Y2
-                </h1>
-                <h1 className="sm:hidden text-sm font-light tracking-[0.15em] text-black" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: '100' }}>
-                  Y2
-                </h1>
-              </div>
+
+  <h1
+    className="hidden sm:block text-sm sm:text-base md:text-lg lg:text-xl font-light tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] text-black"
+    style={{
+      fontFamily: 'Helvetica Neue, Arial, sans-serif',
+      fontWeight: '100'
+    }}
+  >
+    Notorious.Y2
+  </h1>
+
+  <h1
+    className="sm:hidden text-sm font-light tracking-[0.15em] text-black"
+    style={{
+      fontFamily: 'Helvetica Neue, Arial, sans-serif',
+      fontWeight: '100'
+    }}
+  >
+    Y2
+  </h1>
+</a>
               <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
                 <CurrencySelector
                   currencies={currencies}
