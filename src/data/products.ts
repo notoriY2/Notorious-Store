@@ -41,7 +41,7 @@ export const products: Product[] = [
   },
   {
     id: '2',
-    name: 'T-Shirt',
+    name: 'Y2 T-Shirt',
     price: 65,
     image: '/products/15.png',
     images: [
@@ -59,7 +59,7 @@ export const products: Product[] = [
   },
   {
     id: '3',
-    name: 'Red 80564 T-Shirt',
+    name: 'Y2 T-Shirt',
     price: 45,
     image: '/products/36.png',
     images: [
@@ -78,7 +78,7 @@ export const products: Product[] = [
   },
   {
     id: '4',
-    name: 'Black 80564 T-Shirt',
+    name: 'Pink Y2 Hoddie',
     price: 45,
     image: '/products/2.png',
     images: [
@@ -96,7 +96,7 @@ export const products: Product[] = [
   },
   {
     id: '5',
-    name: 'Black 80564 Hoodie',
+    name: 'Y2 T-Shirt',
     price: 125,
     image: '/products/23.png',
     images: [
@@ -114,7 +114,7 @@ export const products: Product[] = [
   },
   {
     id: '6',
-    name: 'Purple 80564 T-Shirt',
+    name: 'Y2 T-Shirt',
     price: 45,
     image: '/products/28.png',
     images: [
@@ -134,7 +134,7 @@ export const products: Product[] = [
     id: '7',
     name: 'Pink Studded Belt',
     price: 35,
-    image: '/products/25.png',
+    image: '/products/27.png',
     images: [
       '/products/10.png',
       '/products/10-2.png',
@@ -331,6 +331,42 @@ export const products: Product[] = [
   },
   {
     id: '18',
+    name: 'White 80564 T-Shirt',
+    price: 42,
+    image: '/products/8.png',
+    images: [
+      '/products/10.png',
+      '/products/10-2.png',
+      '/products/10-3.png',
+      '/products/10-4.png',
+    ],
+    position: { top: 'calc(78% - 96px)', left: '84%' },
+    mobilePosition: { top: 'calc(85% - 70px)', left: '71%' },
+    rotation: -2,
+    scale: 0.94,
+    zIndex: 5,
+    category: 'top'
+  },
+  {
+    id: '19',
+    name: 'White 80564 T-Shirt',
+    price: 42,
+    image: '/products/8.png',
+    images: [
+      '/products/10.png',
+      '/products/10-2.png',
+      '/products/10-3.png',
+      '/products/10-4.png',
+    ],
+    position: { top: 'calc(78% - 96px)', left: '84%' },
+    mobilePosition: { top: 'calc(85% - 70px)', left: '71%' },
+    rotation: -2,
+    scale: 0.94,
+    zIndex: 5,
+    category: 'top'
+  },
+  {
+    id: '20',
     name: 'White 80564 T-Shirt',
     price: 42,
     image: '/products/8.png',
