@@ -107,27 +107,9 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   setHoveredProduct(product);
 };
 
-// Dynamically calculate floor height from product positions
-const floorHeight = `${Math.max(
-  ...products.map((product) => {
-    const topValue = product.position?.top || '100vh';
-
-    // Handles:
-    // "106vh"
-    // "calc(210vh - 96px)"
-    const matches = topValue.match(/\d+/g);
-
-    if (!matches || matches.length === 0) {
-      return 100;
-    }
-
-    return Math.max(...matches.map(Number));
-  })
-) + 30}vh`;
-
-  return (
+return (
     <div
-  className="min-h-screen bg-white relative overflow-x-hidden"
+  className="min-h-screen bg-white relative overflow-hidden"
   onMouseMove={handleMouseMove}
 >
       {/* Header */}
@@ -272,7 +254,7 @@ const floorHeight = `${Math.max(
           <div
   className="relative w-full px-0"
   style={{
-    height: floorHeight,
+    height: 'calc(150vh - 60px)',
     marginBottom: '15px'
   }}
 >
