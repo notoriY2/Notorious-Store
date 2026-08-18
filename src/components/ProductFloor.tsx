@@ -9,20 +9,37 @@ import { Currency } from '../hooks/useCurrency';
 import { User as UserType } from '../hooks/useAuth';
 import { Product as ProductType } from '../types/Product';
 
-// Add near the top of the file, outside the component
-const ITEMS_PER_ROW_DESKTOP = 6;
-const ITEMS_PER_ROW_MOBILE = 3;
-const ROW_HEIGHT_VH_DESKTOP = 31; // matches the ~31% top increment between rows in products.ts
-const ROW_HEIGHT_VH_MOBILE = 15;  // matches the 15% top increment between mobile rows
-const TOP_OFFSET_VH = 40;         // space before the first row
-const BOTTOM_PADDING_VH = 20;     // buffer so the last row's cards aren't clipped
+function calculateFloorHeight(
+  products: Product[],
+  isMobile: boolean
+): string {
+  const positions = products.map((product) => {
+    const position = isMobile
+      ? product.mobilePosition?.top
+      : product.position.top;
 
-function calculateFloorHeight(productCount: number, isMobile: boolean): string {
-  const itemsPerRow = isMobile ? ITEMS_PER_ROW_MOBILE : ITEMS_PER_ROW_DESKTOP;
-  const rowHeightVh = isMobile ? ROW_HEIGHT_VH_MOBILE : ROW_HEIGHT_VH_DESKTOP;
-  const rows = Math.max(1, Math.ceil(productCount / itemsPerRow));
-  const totalVh = TOP_OFFSET_VH + rows * rowHeightVh + BOTTOM_PADDING_VH;
-  return `calc(${totalVh}vh - 60px)`;
+    if (!position) return 0;
+
+    const match = position.match(/(\d+(?:\.\d+)?)vh/);
+
+    if (match) {
+      return parseFloat(match[1]);
+    }
+
+    const percentMatch = position.match(/(\d+(?:\.\d+)?)%/);
+
+    if (percentMatch) {
+      return parseFloat(percentMatch[1]);
+    }
+
+    return 0;
+  });
+
+  const maxPosition = Math.max(...positions, 100);
+
+  const bottomPaddingVh = 30;
+
+  return `calc(${maxPosition + bottomPaddingVh}vh - 60px)`;
 }
 
 interface ProductFloorProps {
@@ -88,8 +105,8 @@ useEffect(() => {
 }, [products]);
 
 const floorHeight = useMemo(
-  () => calculateFloorHeight(products.length, isMobile),
-  [products.length, isMobile]
+  () => calculateFloorHeight(products, isMobile),
+  [products, isMobile]
 );
 
   // Animate products loading one by one
