@@ -52,25 +52,7 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
   const [showFooter, setShowFooter] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const floorHeight = `${Math.max(
-  ...products.map((product) => {
-    const topValue = product.position?.top || '100vh';
-
-    const matches = topValue.match(/\d+/g);
-
-    if (!matches || matches.length === 0) {
-      return 100;
-    }
-
-    return Math.max(...matches.map(Number));
-  }),
-  100
-) + 30}vh`;
-
-const handleProductHover = (product: Product | null) => {
-  setHoveredProduct(product);
-};
-
+  
   // Animate products loading one by one
   useEffect(() => {
     setVisibleProducts([]);
@@ -122,8 +104,26 @@ const handleProductHover = (product: Product | null) => {
   };
 
   const handleProductHover = (product: Product | null) => {
-    setHoveredProduct(product);
-  };
+  setHoveredProduct(product);
+};
+
+// Dynamically calculate floor height from product positions
+const floorHeight = `${Math.max(
+  ...products.map((product) => {
+    const topValue = product.position?.top || '100vh';
+
+    // Handles:
+    // "106vh"
+    // "calc(210vh - 96px)"
+    const matches = topValue.match(/\d+/g);
+
+    if (!matches || matches.length === 0) {
+      return 100;
+    }
+
+    return Math.max(...matches.map(Number));
+  })
+) + 30}vh`;
 
   return (
     <div
