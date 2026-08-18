@@ -9,6 +9,22 @@ import { Currency } from '../hooks/useCurrency';
 import { User as UserType } from '../hooks/useAuth';
 import { Product as ProductType } from '../types/Product';
 
+// Add near the top of the file, outside the component
+const ITEMS_PER_ROW_DESKTOP = 6;
+const ITEMS_PER_ROW_MOBILE = 3;
+const ROW_HEIGHT_VH_DESKTOP = 31; // matches the ~31% top increment between rows in products.ts
+const ROW_HEIGHT_VH_MOBILE = 15;  // matches the 15% top increment between mobile rows
+const TOP_OFFSET_VH = 40;         // space before the first row
+const BOTTOM_PADDING_VH = 20;     // buffer so the last row's cards aren't clipped
+
+function calculateFloorHeight(productCount: number, isMobile: boolean): string {
+  const itemsPerRow = isMobile ? ITEMS_PER_ROW_MOBILE : ITEMS_PER_ROW_DESKTOP;
+  const rowHeightVh = isMobile ? ROW_HEIGHT_VH_MOBILE : ROW_HEIGHT_VH_DESKTOP;
+  const rows = Math.max(1, Math.ceil(productCount / itemsPerRow));
+  const totalVh = TOP_OFFSET_VH + rows * rowHeightVh + BOTTOM_PADDING_VH;
+  return `calc(${totalVh}vh - 60px)`;
+}
+
 interface ProductFloorProps {
   products: Product[];
   cartItems: CartItem[];
@@ -52,6 +68,28 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
   const [showFooter, setShowFooter] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(
+  typeof window !== 'undefined' ? window.innerWidth < 768 : false
+);
+
+// Extend your existing resize effect instead of adding a new one:
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 768);
+    setVisibleProducts([]);
+    setTimeout(() => {
+      setVisibleProducts(products);
+    }, 100);
+  };
+
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, [products]);
+
+const floorHeight = useMemo(
+  () => calculateFloorHeight(products.length, isMobile),
+  [products.length, isMobile]
+);
 
   // Animate products loading one by one
   useEffect(() => {
@@ -65,20 +103,6 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [products]);
-
-  // Handle window resize to update product positions
-  useEffect(() => {
-    const handleResize = () => {
-      // Force re-render when screen size changes
-      setVisibleProducts([]);
-      setTimeout(() => {
-        setVisibleProducts(products);
-      }, 100);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, [products]);
 
   // Handle scroll for footer visibility
