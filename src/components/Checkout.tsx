@@ -216,12 +216,27 @@ const Checkout: React.FC<CheckoutProps> = ({
       <div className="min-h-screen">
         {/* Header */}
         <header className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">💿</span>
-            <h1 className="text-xl font-light tracking-[0.3em] text-black" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: '100' }}>
-              NOTORIOUS.Y2
-            </h1>
-          </div>
+          <a
+  href="/"
+  aria-label="Go to home"
+  className="flex items-center space-x-3 cursor-pointer"
+>
+  <img
+    src="/logo/13 (1).png"
+    alt="Notorious Y2"
+    className="w-8 h-8 md:w-10 md:h-10 object-contain"
+  />
+
+  <h1
+    className="text-xl font-light tracking-[0.3em] text-black"
+    style={{
+      fontFamily: 'Helvetica Neue, Arial, sans-serif',
+      fontWeight: '100'
+    }}
+  >
+    Notorious.Y2
+  </h1>
+</a>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-50 transition-colors duration-200"
