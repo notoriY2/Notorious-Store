@@ -100,10 +100,10 @@ export const products: Product[] = [
     price: 25,
     image: '/products/23.png',
     images: [
-      '/products/23a.png',
+      '/products/23a.jpg',
       '/products/23.png',
-      '/products/23b.png',
-      '/products/23c.png',
+      '/products/23b.jpg',
+      '/products/23c.jpg',
     ],
     position: { top: 'calc(21vh - 96px)', left: '66%' },
     mobilePosition: { top: 'calc(37.5vh - 70px)', left: '38%' },
@@ -192,7 +192,7 @@ export const products: Product[] = [
     images: [
       '/products/29a.png',
       '/products/29.png',
-      '/products/29b.png',
+      '/products/29b.jpg',
       '/products/29c.png',
     ],
     position: { top: 'calc(72vh - 96px)', left: '56%' },
@@ -211,7 +211,7 @@ export const products: Product[] = [
     images: [
       '/products/8a.png',
       '/products/8.png',
-      '/products/8b.png',
+      '/products/8b.jpg',
       '/products/8c.png',
     ],
     position: { top: 'calc(72vh - 96px)', left: '72%' },
@@ -248,7 +248,7 @@ export const products: Product[] = [
     images: [
       '/products/32a.png',
       '/products/32.png',
-      '/products/32b.png',
+      '/products/32b.jpg',
       '/products/32c.png',
     ],
     position: { top: 'calc(120vh - 96px)', left: '20%' },
@@ -361,7 +361,7 @@ export const products: Product[] = [
     images: [
       '/products/30a.png',
       '/products/30.png',
-      '/products/30b.png',
+      '/products/30b.jpg',
       '/products/30c.png',
     ],
     position: { top: 'calc(169.5vh - 96px)', left: '18%' },
@@ -397,7 +397,7 @@ export const products: Product[] = [
     images: [
       '/products/33a.png',
       '/products/33.png',
-      '/products/33b.png',
+      '/products/33b.jpg',
       '/products/33c.png',
     ],
     position: { top: 'calc(172.5vh - 96px)', left: '50%' },
