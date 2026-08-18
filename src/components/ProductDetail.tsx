@@ -553,19 +553,24 @@ const [quantity, setQuantity] = useState(1);
                   onMouseEnter={() => setHoveredProduct(relatedProduct)}
                   onMouseLeave={() => setHoveredProduct(null)}
                 >
-                  <div className="w-full overflow-hidden" style={{ aspectRatio: '3/5.6' }}>
-                    <img
-                      src={relatedProduct.image}
-                      alt={relatedProduct.name}
-                      className="w-full h-full object-cover transition-all duration-300"
-                    />
-                    {/* Secondary image overlay on hover */}
-                    <img
-                      src={relatedProduct.image}
-                      alt={`${relatedProduct.name} - Secondary`}
-                      className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    />
-                  </div>
+                  <div
+  className="relative w-full overflow-hidden"
+  style={{ aspectRatio: '3/5.6' }}
+>
+  {/* Normal: "a" image */}
+  <img
+    src={relatedProduct.images?.[0] || relatedProduct.image}
+    alt={relatedProduct.name}
+    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 group-hover:opacity-0"
+  />
+
+  {/* Hover: original image */}
+  <img
+    src={relatedProduct.image}
+    alt={`${relatedProduct.name} - Original`}
+    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+  />
+</div>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -617,13 +622,24 @@ const [quantity, setQuantity] = useState(1);
                   onMouseEnter={() => setHoveredProduct(relatedProduct)}
                   onMouseLeave={() => setHoveredProduct(null)}
                 >
-                  <div className="w-full overflow-hidden" style={{ aspectRatio: '3/5.6' }}>
-                    <img
-                      src={relatedProduct.image}
-                      alt={relatedProduct.name}
-                      className="w-full h-full object-cover transition-all duration-300"
-                    />
-                  </div>
+                  <div
+  className="relative w-full overflow-hidden"
+  style={{ aspectRatio: '3/5.6' }}
+>
+  {/* Normal: "a" image */}
+  <img
+    src={relatedProduct.images?.[0] || relatedProduct.image}
+    alt={relatedProduct.name}
+    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 group-hover:opacity-0"
+  />
+
+  {/* Hover: original image */}
+  <img
+    src={relatedProduct.image}
+    alt={`${relatedProduct.name} - Original`}
+    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+  />
+</div>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
