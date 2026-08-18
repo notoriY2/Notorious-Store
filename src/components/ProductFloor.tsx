@@ -107,6 +107,23 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
     setHoveredProduct(product);
   };
 
+    // The floor uses absolute-positioned products, so height:auto cannot
+  // calculate the required space. Calculate the required scroll height
+  // from the number of desktop/mobile rows instead.
+  const desktopRows = Math.ceil(products.length / 6);
+  const mobileRows = Math.ceil(products.length / 3);
+
+  const desktopHeightVh =
+    150 + Math.max(0, desktopRows - 3) * 46.5;
+
+  const mobileHeightVh =
+    150 + Math.max(0, mobileRows - 6) * 22.5;
+
+  const floorHeightVh = Math.max(
+    desktopHeightVh,
+    mobileHeightVh
+  );
+
   return (
     <div className="min-h-screen bg-white relative overflow-hidden" onMouseMove={handleMouseMove}>
       {/* Header */}
@@ -248,7 +265,13 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
         
         {viewMode === 'floor' ? (
           /* Products scattered on floor with luxury spacing */
-          <div className="relative w-full px-0" style={{ height: 'calc(150vh - 60px)', marginBottom: '15px' }}>
+          <div
+  className="relative w-full px-0"
+  style={{
+    height: `calc(${floorHeightVh}vh - 60px)`,
+    marginBottom: '15px',
+  }}
+>
             {visibleProducts.map((product) => (
               <ProductItem
                 key={product.id}
