@@ -55,7 +55,7 @@ export const products: Product[] = [
     rotation: 15,
     scale: 0.85,
     zIndex: 3,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '3',
@@ -146,7 +146,7 @@ export const products: Product[] = [
     rotation: 45,
     scale: 0.75,
     zIndex: 8,
-    category: 'accessory'
+    category: 'top'
   },
   {
     id: '8',
@@ -164,7 +164,7 @@ export const products: Product[] = [
     rotation: -5,
     scale: 0.92,
     zIndex: 3,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '9',
@@ -200,7 +200,7 @@ export const products: Product[] = [
     rotation: -8,
     scale: 0.84,
     zIndex: 4,
-    category: 'bottom',
+    category: 'top',
     soldOut: true
   },
   {
@@ -219,7 +219,7 @@ export const products: Product[] = [
     rotation: -35,
     scale: 0.7,
     zIndex: 9,
-    category: 'accessory'
+    category: 'top'
   },
 
   {
@@ -238,7 +238,7 @@ export const products: Product[] = [
     rotation: -10,
     scale: 0.93,
     zIndex: 4,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '14',
@@ -256,7 +256,7 @@ export const products: Product[] = [
     rotation: 25,
     scale: 0.85,
     zIndex: 7,
-    category: 'accessory'
+    category: 'top'
   },
   {
     id: '15',
@@ -310,7 +310,7 @@ export const products: Product[] = [
     rotation: 9,
     scale: 0.86,
     zIndex: 3,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '18',
@@ -387,7 +387,7 @@ export const products: Product[] = [
     rotation: -3,
     scale: 0.86,
     zIndex: 7,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '22',
@@ -441,7 +441,7 @@ export const products: Product[] = [
     rotation: 14,
     scale: 0.8,
     zIndex: 2,
-    category: 'accessory'
+    category: 'top'
   },
 
   // ─────────────────────────────────────────────
@@ -482,7 +482,7 @@ export const products: Product[] = [
     rotation: 18,
     scale: 0.87,
     zIndex: 7,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '27',
@@ -536,7 +536,7 @@ export const products: Product[] = [
     rotation: -16,
     scale: 0.9,
     zIndex: 5,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '30',
@@ -554,7 +554,7 @@ export const products: Product[] = [
     rotation: 9,
     scale: 0.78,
     zIndex: 8,
-    category: 'accessory'
+    category: 'top'
   },
 
   // ─────────────────────────────────────────────
@@ -595,7 +595,7 @@ export const products: Product[] = [
     rotation: 13,
     scale: 0.86,
     zIndex: 7,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '33',
@@ -649,7 +649,7 @@ export const products: Product[] = [
     rotation: -7,
     scale: 0.88,
     zIndex: 5,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '36',
@@ -667,7 +667,7 @@ export const products: Product[] = [
     rotation: 16,
     scale: 0.81,
     zIndex: 3,
-    category: 'accessory'
+    category: 'top'
   },
 
   // ─────────────────────────────────────────────
@@ -708,7 +708,7 @@ export const products: Product[] = [
     rotation: 20,
     scale: 0.85,
     zIndex: 7,
-    category: 'bottom'
+    category: 'top'
   },
   {
     id: '39',
