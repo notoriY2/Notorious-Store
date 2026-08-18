@@ -248,7 +248,7 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
         
         {viewMode === 'floor' ? (
           /* Products scattered on floor with luxury spacing */
-          <div className="relative w-full px-0" style={{ height: 'calc(250vh - 60px)', marginBottom: '15px' }}>
+          <div className="relative w-full px-0" style={{ height: 'calc(150vh - 60px)', marginBottom: '15px' }}>
             {visibleProducts.map((product) => (
               <ProductItem
                 key={product.id}
