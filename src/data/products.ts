@@ -1,4 +1,30 @@
 // src/data/products.ts
+// The original layout was designed assuming the floor container is 150vh tall,
+// so percentage positions (products 1–18) resolve against that baseline.
+const PERCENT_BASELINE_VH = 150;
+
+const parseTopToVh = (top: string): number => {
+  const percentMatch = top.match(/(-?\d+(\.\d+)?)%/);
+  if (percentMatch) {
+    return (parseFloat(percentMatch[1]) / 100) * PERCENT_BASELINE_VH;
+  }
+  const vhMatch = top.match(/(-?\d+(\.\d+)?)vh/);
+  if (vhMatch) {
+    return parseFloat(vhMatch[1]);
+  }
+  return 0;
+};
+
+export const getFloorHeightVh = (products: Product[]): number => {
+  const maxTop = Math.max(
+    ...products.flatMap(p => [
+      parseTopToVh(p.position.top),
+      p.mobilePosition ? parseTopToVh(p.mobilePosition.top) : 0,
+    ])
+  );
+  return maxTop + 30; // buffer so the last row + card height isn't clipped
+};
+
 export interface Product {
   id: string;
   name: string;
