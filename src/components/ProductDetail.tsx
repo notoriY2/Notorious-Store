@@ -1,5 +1,5 @@
+// src/components/ProductDetail.tsx
 import { products } from '../data/products';
-
 import React, { useState } from 'react';
 import { X, Heart, Share2, Facebook, Twitter, Instagram, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ShoppingBag, User, MessageCircle } from 'lucide-react';
 import { Product } from '../types/Product';
