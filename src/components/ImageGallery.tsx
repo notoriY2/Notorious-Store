@@ -1,5 +1,5 @@
 // src/components/ImageGallery.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ImageGalleryProps {
@@ -18,8 +18,15 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   initialIndex = 0
 }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+const [isZoomed, setIsZoomed] = useState(false);
+const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+
+useEffect(() => {
+  if (isOpen) {
+    setCurrentIndex(initialIndex);
+    setIsZoomed(false);
+  }
+}, [initialIndex, isOpen]);
 
   if (!isOpen) return null;
 
