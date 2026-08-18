@@ -642,7 +642,7 @@ export const products: Product[] = [
       '/products/38a.png',
       '/products/38.png',
       '/products/38b.png',
-      '/products/38c.png',
+      '/products/38c.jpg',
     ],
     position: { top: 'calc(255.5vh - 96px)', left: '66%' },
     mobilePosition: { top: 'calc(262.5vh - 70px)', left: '38%' },
