@@ -96,6 +96,17 @@ const BannerCollection: React.FC<BannerCollectionProps> = ({
 
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+  if (!isOpen) return;
+
+  const previousOverflow = document.body.style.overflow;
+  document.body.style.overflow = 'hidden';
+
+  return () => {
+    document.body.style.overflow = previousOverflow;
+  };
+}, [isOpen]);
+
   // Footer scroll listener tied to scrollContainerRef
   useEffect(() => {
     const el = scrollContainerRef.current;
@@ -332,6 +343,8 @@ const BannerCollection: React.FC<BannerCollectionProps> = ({
                 onHover={setHoveredProduct}
               />
             )}
+
+            <div style={{ height: '3cm' }} />
           </div>
 
         </div>
@@ -341,12 +354,12 @@ const BannerCollection: React.FC<BannerCollectionProps> = ({
           FIXED FOOTER SLIDE-UP WRAPPER
       ===================================================== */}
       <div
-        className={`fixed bottom-14 lg:bottom-0 left-0 right-0 z-[60] transition-transform duration-300 ${
-          showFooter ? 'translate-y-0' : 'translate-y-full'
-        }`}
-      >
-        <ShopFooter />
-      </div>
+  className={`fixed bottom-14 lg:bottom-0 left-0 right-0 z-[55] transition-transform duration-300 ${
+    showFooter ? 'translate-y-0' : 'translate-y-full'
+  }`}
+>
+  <ShopFooter />
+</div>
 
       {/* =====================================================
           HOVER PRODUCT TOOLTIP

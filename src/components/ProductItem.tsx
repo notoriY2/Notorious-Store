@@ -52,9 +52,8 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, onProductClick, onHo
           loading="lazy"
           decoding="async"
           className={`mobile-floor-product md:w-48 md:h-49 lg:w-60 lg:h-61 xl:w-72 xl:h-73 object-cover ${
-            isMobile ? 'rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.18)]' : 'rounded-lg'
+            isMobile ? 'rounded-2xl' : 'rounded-lg'
           }`}
-          style={!isMobile ? { filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))' } : undefined}
         />
       </div>
     </div>

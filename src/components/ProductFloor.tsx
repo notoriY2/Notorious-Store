@@ -748,34 +748,40 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
           }`}
         />
 
-        {isLoading ? (
-          <div className="relative z-10 flex flex-col items-center justify-center min-h-[50vh] px-6 text-center py-20 bg-transparent">
-            <div className="relative w-28 h-28 sm:w-36 sm:h-36 mb-8">
-              <svg 
-                viewBox="0 0 100 100" 
-                className="absolute inset-0 w-full h-full animate-spin" 
-                style={{ animationDuration: '2.4s' }}
-              >
-                <circle
-                  cx="50" cy="50" r="46"
-                  fill="none"
-                  stroke="#C44D2B"
-                  strokeWidth="3"
-                  strokeDasharray="10 8"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <img
-                src="/logo/13 (1).png"
-                alt="Notorious Y2"
-                className="absolute inset-0 m-auto w-[72%] h-[72%] object-contain"
-              />
-            </div>
-            <p className="text-xs text-gray-500 tracking-[0.35em] font-light">
-              LOADING COLLECTION
-            </p>
-          </div>
-        ) : viewMode === 'floor' ? (
+        {/* Non-blocking loading overlay — renders ON TOP of whatever's
+    already on screen (cached products from a previous load, or an
+    empty floor on first load) instead of hiding it. Transparent bg,
+    no pointer-events, so it never blocks scroll/clicks. */}
+{isLoading && (
+  <div className="fixed inset-0 z-20 flex flex-col items-center justify-center px-6 text-center bg-transparent pointer-events-none">
+    <div className="relative w-28 h-28 sm:w-36 sm:h-36 mb-8">
+      <svg
+        viewBox="0 0 100 100"
+        className="absolute inset-0 w-full h-full animate-spin"
+        style={{ animationDuration: '2.4s' }}
+      >
+        <circle
+          cx="50" cy="50" r="46"
+          fill="none"
+          stroke="#C44D2B"
+          strokeWidth="3"
+          strokeDasharray="10 8"
+          strokeLinecap="round"
+        />
+      </svg>
+      <img
+        src="/logo/13 (1).png"
+        alt="Notorious Y2"
+        className="absolute inset-0 m-auto w-[72%] h-[72%] object-contain"
+      />
+    </div>
+    <p className="text-xs text-gray-500 tracking-[0.35em] font-dark">
+      LOADING....
+    </p>
+  </div>
+)}
+
+{viewMode === 'floor' ? (
           <div className="relative z-10">
 
             {/* HERO */}
@@ -891,7 +897,7 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   style={{
     '--floor-h-mobile': `${mobileHeightVh}vh`,
     '--floor-h-desktop': `${desktopHeightVh}vh`,
-    marginBottom: '15px',
+    marginBottom: '50px',
   } as React.CSSProperties}
 >
               {visibleProducts.map(
@@ -922,7 +928,7 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
             className="px-0"
             style={{
               marginBottom:
-                '15px',
+                '50px',
             }}
           >
             <ProductGrid

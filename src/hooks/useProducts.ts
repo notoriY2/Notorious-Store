@@ -8,7 +8,13 @@ import { mapRowToProduct, ProductRow } from '../lib/mapProduct';
 export { mapRowToProduct };
 export type { ProductRow };
 
-// Slim projection for fast initial floor render using the correct separate coordinate columns
+// NO product_inventory join here on purpose. The floor/grid never
+// renders per-size stock — only ProductDetail does, and it already
+// fetches it separately via fetchProductById() below. Embedding the
+// join here forced a LATERAL join that multiplied every product row
+// by its size count on every floor load, with no supporting index —
+// this was the actual cause of the 57014 statement timeouts and the
+// resulting 20-30s "LOADING COLLECTION" screen.
 const PRODUCTS_SELECT_FLOOR = `
   id,
   slug,
@@ -25,11 +31,7 @@ const PRODUCTS_SELECT_FLOOR = `
   rotation,
   scale,
   z_index,
-  show_on_floor,
-  product_inventory (
-    size,
-    available
-  )
+  show_on_floor
 `;
 
 const PRODUCTS_SELECT_FULL = `
@@ -58,6 +60,8 @@ const isRetryableError = (message: string | undefined): boolean => {
     msg.includes('connection') ||
     msg.includes('too many') ||
     msg.includes('econnreset') ||
+    msg.includes('internal server error') ||
+    msg.includes('500') ||
     msg.includes('502') ||
     msg.includes('503') ||
     msg.includes('504')

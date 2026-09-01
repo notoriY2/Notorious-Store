@@ -623,18 +623,37 @@ function App() {
       />
 
       <MobileTabBar
-        activeTab="shop"
-        wishlistCount={wishlistItems.length}
-        cartCount={cartItemsCount}
-        user={user}
-        onShopClick={() => {
-          setViewMode('floor');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onWishlistClick={handleOpenWishlist}
-        onCartClick={handleOpenCart}
-        onAccountClick={user ? handleOpenMyAccount : () => handleOpenAuth()}
-      />
+  activeTab="shop"
+  wishlistCount={wishlistItems.length}
+  cartCount={cartItemsCount}
+  user={user}
+  onShopClick={() => {
+    setIsProductDetailOpen(false);
+    setSelectedProduct(null);
+    setIsBannerCollectionOpen(false);
+    setSelectedBanner(null);
+    setIsCartOpen(false);
+    setIsWishlistOpen(false);
+    setIsCheckoutOpen(false);
+    setViewMode('floor');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }}
+  onWishlistClick={() => {
+    setIsBannerCollectionOpen(false);
+    setSelectedBanner(null);
+    handleOpenWishlist();
+  }}
+  onCartClick={() => {
+    setIsBannerCollectionOpen(false);
+    setSelectedBanner(null);
+    handleOpenCart();
+  }}
+  onAccountClick={() => {
+    setIsBannerCollectionOpen(false);
+    setSelectedBanner(null);
+    user ? handleOpenMyAccount() : handleOpenAuth();
+  }}
+/>
 
       <SplashScreen
         isVisible={showSplash}

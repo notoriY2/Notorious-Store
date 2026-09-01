@@ -121,6 +121,17 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
   const [showFooter, setShowFooter] = useState(false);
 
   useEffect(() => {
+  if (!isOpen) return;
+
+  const previousOverflow = document.body.style.overflow;
+  document.body.style.overflow = 'hidden';
+
+  return () => {
+    document.body.style.overflow = previousOverflow;
+  };
+}, [isOpen]);
+
+  useEffect(() => {
   const el = scrollContainerRef.current;
   if (!el) return;
 
