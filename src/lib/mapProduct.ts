@@ -65,6 +65,7 @@ export interface ProductRow {
 
 export const mapRowToProduct = (row: ProductRow): Product => ({
   id: row.id,
+  slug: row.slug,
   name: row.name,
   price: Number(row.price),
   image: row.image,

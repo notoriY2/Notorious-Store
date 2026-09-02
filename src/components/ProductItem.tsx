@@ -28,7 +28,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, onProductClick, onHo
   
   return (
     <div
-      className="absolute cursor-pointer group"
+      className="absolute cursor-pointer group active:scale-95 transition-transform duration-150"
       onClick={() => onProductClick(product)}
       onMouseEnter={() => onHover(product)}
       onMouseLeave={() => onHover(null)}

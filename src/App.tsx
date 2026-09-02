@@ -1,19 +1,28 @@
-import {
+import React, {
   useEffect,
   useRef,
   useState,
+  lazy,
+  Suspense,
 } from 'react';
 
 import SplashScreen from './components/SplashScreen';
 import ProductFloor from './components/ProductFloor';
 import Cart from './components/Cart';
-import ProductDetail from './components/ProductDetail';
 import AuthModal from './components/AuthModal';
 import Wishlist from './components/Wishlist';
-import Checkout from './components/Checkout';
-import { lazy, Suspense } from 'react';
-const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
-import MyAccount from './components/MyAccount';
+import BannerCollection from './components/BannerCollection';
+
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
+import ProductDetailRoute from './routes/ProductDetailRoute';
+import CheckoutRoute from './routes/CheckoutRoute';
+import MyAccountRoute from './routes/MyAccountRoute';
+import BannerCollectionRoute from './routes/BannerCollectionRoute';
+
+const AdminDashboardRoute = lazy(
+  () => import('./routes/AdminDashboardRoute')
+);
 
 import { useCart } from './hooks/useCart';
 import { useAuth } from './hooks/useAuth';
@@ -22,8 +31,6 @@ import { useWishlist } from './hooks/useWishlist';
 import { useProducts } from './hooks/useProducts';
 
 import type { Product } from './types/Product';
-
-import BannerCollection from './components/BannerCollection';
 import type { StorefrontBanner } from './data/banners';
 
 import { trackEvent } from './lib/analytics';
@@ -35,75 +42,45 @@ function App() {
   ========================================================= */
 
   const [showSplash, setShowSplash] = useState(true);
-  const { products, isLoading: productsLoading, error: productsError } = useProducts();
+
+  const {
+    products,
+    isLoading: productsLoading,
+    error: productsError,
+  } = useProducts();
+
   const [viewMode, setViewMode] = useState<'floor' | 'grid'>('floor');
 
-  const [isCartOpen, setIsCartOpen] =
-    useState(false);
+  const navigate = useNavigate();
 
-  const [
-    selectedProduct,
-    setSelectedProduct,
-  ] = useState<Product | null>(
-    null
-  );
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const [
-    isProductDetailOpen,
-    setIsProductDetailOpen,
-  ] = useState(false);
-
-  const [
-    isAuthModalOpen,
-    setIsAuthModalOpen,
-  ] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const [
     authContextMessage,
     setAuthContextMessage,
   ] = useState<string | undefined>();
 
-  const [
-    isWishlistOpen,
-    setIsWishlistOpen,
-  ] = useState(false);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
 
-  const [
-    isCheckoutOpen,
-    setIsCheckoutOpen,
-  ] = useState(false);
+  /*
+   * Hero collection remains local state because the hero section
+   * is intentionally not routed.
+   */
+  const [heroBanner, setHeroBanner] =
+    useState<StorefrontBanner | null>(null);
 
-  const [
-    isAdminDashboardOpen,
-    setIsAdminDashboardOpen,
-  ] = useState(false);
-
-  const [
-    isMyAccountOpen,
-    setIsMyAccountOpen,
-  ] = useState(false);
-
-  const [
-    selectedBanner,
-    setSelectedBanner,
-  ] = useState<StorefrontBanner | null>(
-    null
-  );
-
-  const [
-    isBannerCollectionOpen,
-    setIsBannerCollectionOpen,
-  ] = useState(false);
+  const [isHeroCollectionOpen, setIsHeroCollectionOpen] =
+    useState(false);
 
   /* =========================================================
      REFS
   ========================================================= */
 
-  const cartRef =
-    useRef<HTMLDivElement>(null);
+  const cartRef = useRef<HTMLDivElement>(null);
 
-  const wishlistRef =
-    useRef<HTMLDivElement>(null);
+  const wishlistRef = useRef<HTMLDivElement>(null);
 
   /* =========================================================
      DATA HOOKS
@@ -123,6 +100,7 @@ function App() {
     addToCart,
     updateQuantity,
     removeItem,
+    clearCart,
   } = useCart(user?.id ?? null);
 
   const {
@@ -148,12 +126,20 @@ function App() {
   ========================================================= */
 
   useEffect(() => {
-    const t = window.setTimeout(() => setShowSplash(false), 3000);
+    const t = window.setTimeout(
+      () => setShowSplash(false),
+      3000
+    );
+
     return () => window.clearTimeout(t);
   }, []);
 
   useEffect(() => {
-    const maxTimer = window.setTimeout(() => setShowSplash(false), 6000);
+    const maxTimer = window.setTimeout(
+      () => setShowSplash(false),
+      6000
+    );
+
     return () => window.clearTimeout(maxTimer);
   }, []);
 
@@ -161,20 +147,11 @@ function App() {
      PRODUCT NAVIGATION
   ========================================================= */
 
-  const handleProductClick = (
-    product: Product
-  ) => {
+  const handleProductClick = (product: Product) => {
     setIsCartOpen(false);
     setIsWishlistOpen(false);
-    setIsCheckoutOpen(false);
 
-    setSelectedProduct(product);
-    setIsProductDetailOpen(true);
-  };
-
-  const handleCloseProductDetail = () => {
-    setIsProductDetailOpen(false);
-    setSelectedProduct(null);
+    navigate(`/product/${product.slug ?? product.id}`);
   };
 
   /* =========================================================
@@ -183,7 +160,6 @@ function App() {
 
   const handleOpenCart = () => {
     setIsWishlistOpen(false);
-    setIsCheckoutOpen(false);
 
     setIsCartOpen(true);
   };
@@ -203,7 +179,6 @@ function App() {
 
   const handleOpenWishlist = () => {
     setIsCartOpen(false);
-    setIsCheckoutOpen(false);
 
     setIsWishlistOpen(true);
   };
@@ -226,17 +201,8 @@ function App() {
   ) => {
     setIsCartOpen(false);
     setIsWishlistOpen(false);
-    setIsCheckoutOpen(false);
-    setIsProductDetailOpen(false);
 
-    setSelectedBanner(banner);
-    setIsBannerCollectionOpen(true);
-  };
-
-  const handleBannerCollectionProductClick = (product: Product) => {
-    handleProductClick(product);
-    setIsBannerCollectionOpen(false);
-    setSelectedBanner(null);
+    navigate(`/collection/${banner.id}`);
   };
 
   /* =========================================================
@@ -247,40 +213,43 @@ function App() {
     productIds: string[],
     title: string
   ) => {
-    const heroProducts =
-      products.filter(
-        (product) =>
-          productIds.includes(product.id)
-      );
+    const heroProducts = products.filter(
+      (product) => productIds.includes(product.id)
+    );
 
     if (heroProducts.length === 0) {
       return;
     }
 
-    const heroBanner =
-      {
-        id: 'hero-section',
-        title,
-        image: '',
-        position: 'Top' as const,
-        products: heroProducts,
-        productIds,
-      } as StorefrontBanner & {
-        productIds: string[];
-      };
-
     setIsCartOpen(false);
     setIsWishlistOpen(false);
-    setIsCheckoutOpen(false);
-    setIsProductDetailOpen(false);
 
-    setSelectedBanner(heroBanner);
-    setIsBannerCollectionOpen(true);
+    setHeroBanner({
+      id: 'hero-section',
+      title,
+      image: '',
+      position: 'Top',
+      products: heroProducts,
+      productIds,
+    } as StorefrontBanner & {
+      productIds: string[];
+    });
+
+    setIsHeroCollectionOpen(true);
   };
 
-  const handleCloseBannerCollection = () => {
-    setIsBannerCollectionOpen(false);
-    setSelectedBanner(null);
+  const handleCloseHeroCollection = () => {
+    setIsHeroCollectionOpen(false);
+    setHeroBanner(null);
+  };
+
+  const handleHeroCollectionProductClick = (
+    product: Product
+  ) => {
+    setIsHeroCollectionOpen(false);
+    setHeroBanner(null);
+
+    handleProductClick(product);
   };
 
   /* =========================================================
@@ -294,17 +263,8 @@ function App() {
 
     setIsCartOpen(false);
     setIsWishlistOpen(false);
-    setIsProductDetailOpen(false);
 
-    setIsCheckoutOpen(true);
-  };
-
-  const handleCloseCheckout = () => {
-    setIsCheckoutOpen(false);
-  };
-
-  const handleBackToShopping = () => {
-    setIsCheckoutOpen(false);
+    navigate('/checkout');
   };
 
   /* =========================================================
@@ -327,14 +287,8 @@ function App() {
   const handleOpenAdminDashboard = () => {
     setIsCartOpen(false);
     setIsWishlistOpen(false);
-    setIsCheckoutOpen(false);
-    setIsProductDetailOpen(false);
 
-    setIsAdminDashboardOpen(true);
-  };
-
-  const handleCloseAdminDashboard = () => {
-    setIsAdminDashboardOpen(false);
+    navigate('/admin');
   };
 
   /* =========================================================
@@ -344,14 +298,8 @@ function App() {
   const handleOpenMyAccount = () => {
     setIsCartOpen(false);
     setIsWishlistOpen(false);
-    setIsCheckoutOpen(false);
-    setIsProductDetailOpen(false);
 
-    setIsMyAccountOpen(true);
-  };
-
-  const handleCloseMyAccount = () => {
-    setIsMyAccountOpen(false);
+    navigate('/account');
   };
 
   /* =========================================================
@@ -362,8 +310,7 @@ function App() {
     const handleClickOutside = (
       event: MouseEvent
     ) => {
-      const target =
-        event.target as Node;
+      const target = event.target as Node;
 
       if (
         isCartOpen &&
@@ -435,85 +382,193 @@ function App() {
 
   return (
     <>
-      <ProductFloor
-        products={products}
-        isLoading={productsLoading}
-        cartItems={cartItems}
-        onAddToCart={addToCart}
-        onOpenCart={handleOpenCart}
-        onProductClick={handleProductClick}
-        currencies={currencies}
-        selectedCurrency={selectedCurrency}
-        onCurrencyChange={setSelectedCurrency}
-        formatPrice={formatPrice}
-        user={user}
-        onAuthClick={handleOpenAuth}
-        onSignOut={signOut}
-        wishlistItems={wishlistItems}
-        onToggleWishlist={toggleWishlist}
-        onOpenWishlist={handleOpenWishlist}
-        onOpenAdminDashboard={
-          handleOpenAdminDashboard
-        }
-        onOpenMyAccount={
-          handleOpenMyAccount
-        }
-        onBannerClick={
-          handleBannerClick
-        }
-        onHeroClick={
-          handleHeroClick
-        }
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-      />
+      <Routes>
+        {/* =====================================================
+            SHOP / HOME
+        ===================================================== */}
 
-      <ProductDetail
-        product={selectedProduct}
-        allProducts={products}
-        isOpen={isProductDetailOpen}
-        onClose={handleCloseProductDetail}
-        onAddToCart={addToCart}
-        formatPrice={formatPrice}
-        onToggleWishlist={toggleWishlist}
-        isInWishlist={isInWishlist}
-        currencies={currencies}
-        selectedCurrency={selectedCurrency}
-        onCurrencyChange={setSelectedCurrency}
-        user={user}
-        onAuthClick={handleOpenAuth}
-        onSignOut={signOut}
-        wishlistItems={wishlistItems}
-        cartItems={cartItems}
-        isCartOpen={isCartOpen}
-        onOpenCart={handleOpenCart}
-        onCloseCart={handleCloseCart}
-        onUpdateCartQuantity={
-          updateQuantity
-        }
-        onRemoveCartItem={removeItem}
-        onOpenWishlist={
-          handleOpenWishlist
-        }
-        cartItemsCount={cartItemsCount}
-        onProductClick={handleProductClick}
-        onOpenAdminDashboard={
-          handleOpenAdminDashboard
-        }
-        onOpenMyAccount={
-          handleOpenMyAccount
-        }
-      />
-
-      {isBannerCollectionOpen && (
-        <BannerCollection
-          banner={selectedBanner}
-          isOpen={isBannerCollectionOpen}
-          onClose={
-            handleCloseBannerCollection
+        <Route
+          path="/"
+          element={
+            <ProductFloor
+              products={products}
+              isLoading={productsLoading}
+              cartItems={cartItems}
+              onAddToCart={addToCart}
+              onOpenCart={handleOpenCart}
+              onProductClick={handleProductClick}
+              currencies={currencies}
+              selectedCurrency={selectedCurrency}
+              onCurrencyChange={setSelectedCurrency}
+              formatPrice={formatPrice}
+              user={user}
+              onAuthClick={handleOpenAuth}
+              onSignOut={signOut}
+              wishlistItems={wishlistItems}
+              onToggleWishlist={toggleWishlist}
+              onOpenWishlist={handleOpenWishlist}
+              onOpenAdminDashboard={
+                handleOpenAdminDashboard
+              }
+              onOpenMyAccount={
+                handleOpenMyAccount
+              }
+              onBannerClick={handleBannerClick}
+              onHeroClick={handleHeroClick}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+            />
           }
+        />
+
+        {/* =====================================================
+            PRODUCT DETAIL
+        ===================================================== */}
+
+        <Route
+          path="/product/:slugOrId"
+          element={
+            <ProductDetailRoute
+              products={products}
+              onAddToCart={addToCart}
+              formatPrice={formatPrice}
+              onToggleWishlist={toggleWishlist}
+              isInWishlist={isInWishlist}
+              currencies={currencies}
+              selectedCurrency={selectedCurrency}
+              onCurrencyChange={setSelectedCurrency}
+              user={user}
+              onAuthClick={handleOpenAuth}
+              onSignOut={signOut}
+              wishlistItems={wishlistItems}
+              cartItems={cartItems}
+              isCartOpen={isCartOpen}
+              onOpenCart={handleOpenCart}
+              onCloseCart={handleCloseCart}
+              onUpdateCartQuantity={
+                updateQuantity
+              }
+              onRemoveCartItem={removeItem}
+              onOpenWishlist={
+                handleOpenWishlist
+              }
+              cartItemsCount={cartItemsCount}
+              onOpenAdminDashboard={
+                handleOpenAdminDashboard
+              }
+              onOpenMyAccount={
+                handleOpenMyAccount
+              }
+            />
+          }
+        />
+
+        {/* =====================================================
+            BANNER COLLECTION
+        ===================================================== */}
+
+        <Route
+          path="/collection/:bannerId"
+          element={
+            <BannerCollectionRoute
+              onProductClick={handleProductClick}
+              onAddToCart={addToCart}
+              formatPrice={formatPrice}
+              currencies={currencies}
+              selectedCurrency={selectedCurrency}
+              onCurrencyChange={
+                setSelectedCurrency
+              }
+              user={user}
+              onAuthClick={handleOpenAuth}
+              wishlistItems={wishlistItems}
+              onOpenWishlist={
+                handleOpenWishlist
+              }
+              cartItemsCount={cartItemsCount}
+              onOpenCart={handleOpenCart}
+              onOpenAdminDashboard={
+                handleOpenAdminDashboard
+              }
+              onOpenMyAccount={
+                handleOpenMyAccount
+              }
+            />
+          }
+        />
+
+        {/* =====================================================
+            CHECKOUT
+        ===================================================== */}
+
+        <Route
+          path="/checkout"
+          element={
+            <CheckoutRoute
+              items={cartItems}
+              formatPrice={formatPrice}
+              user={user}
+              onAuthClick={handleOpenAuth}
+              onSignIn={signIn}
+              onSignUp={signUp}
+              onSignInWithProvider={
+                signInWithProvider
+              }
+              isAuthLoading={isLoading}
+              clearCart={clearCart}
+            />
+          }
+        />
+
+        {/* =====================================================
+            MY ACCOUNT
+        ===================================================== */}
+
+        <Route
+          path="/account"
+          element={
+            <MyAccountRoute
+              user={user}
+              onSignOut={signOut}
+            />
+          }
+        />
+
+        {/* =====================================================
+            ADMIN
+        ===================================================== */}
+
+        <Route
+          path="/admin"
+          element={
+            <Suspense
+              fallback={
+                <div className="fixed inset-0 z-[60] bg-white" />
+              }
+            >
+              <AdminDashboardRoute
+                user={user}
+                onSignOut={signOut}
+              />
+            </Suspense>
+          }
+        />
+      </Routes>
+
+      {/* =======================================================
+          HERO-LINKED COLLECTION
+
+          Hero collections intentionally remain local state
+          rather than using a URL route.
+      ======================================================= */}
+
+      {isHeroCollectionOpen && heroBanner && (
+        <BannerCollection
+          banner={heroBanner}
+          isOpen={isHeroCollectionOpen}
+          onClose={handleCloseHeroCollection}
           onProductClick={
-            handleBannerCollectionProductClick
+            handleHeroCollectionProductClick
           }
           onAddToCart={addToCart}
           formatPrice={formatPrice}
@@ -539,6 +594,10 @@ function App() {
         />
       )}
 
+      {/* =======================================================
+          AUTH MODAL
+      ======================================================= */}
+
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => {
@@ -554,14 +613,16 @@ function App() {
         contextMessage={authContextMessage}
       />
 
+      {/* =======================================================
+          WISHLIST
+      ======================================================= */}
+
       <Wishlist
         ref={wishlistRef}
         isOpen={isWishlistOpen}
         onClose={handleCloseWishlist}
         items={wishlistItems}
-        onRemoveItem={
-          removeFromWishlist
-        }
+        onRemoveItem={removeFromWishlist}
         onAddToCart={addToCart}
         formatPrice={formatPrice}
         onProductClick={
@@ -569,14 +630,16 @@ function App() {
         }
       />
 
+      {/* =======================================================
+          CART
+      ======================================================= */}
+
       <Cart
         ref={cartRef}
         isOpen={isCartOpen}
         onClose={handleCloseCart}
         items={cartItems}
-        onUpdateQuantity={
-          updateQuantity
-        }
+        onUpdateQuantity={updateQuantity}
         onRemoveItem={removeItem}
         formatPrice={formatPrice}
         onProductClick={
@@ -586,74 +649,47 @@ function App() {
         onCheckout={handleCheckout}
       />
 
-      <Checkout
-        isOpen={isCheckoutOpen}
-        onClose={handleCloseCheckout}
-        items={cartItems}
-        formatPrice={formatPrice}
-        onBackToShopping={
-          handleBackToShopping
-        }
-        user={user}
-        onAuthClick={handleOpenAuth}
-        onSignIn={signIn}
-        onSignUp={signUp}
-        onSignInWithProvider={
-          signInWithProvider
-        }
-        isAuthLoading={isLoading}
-      />
-
-      {isAdminDashboardOpen && (
-        <Suspense fallback={<div className="fixed inset-0 z-[60] bg-white" />}>
-          <AdminDashboard
-            isOpen={isAdminDashboardOpen}
-            onClose={handleCloseAdminDashboard}
-            user={user}
-            onSignOut={signOut}
-          />
-        </Suspense>
-      )}
-
-      <MyAccount
-        isOpen={isMyAccountOpen}
-        onClose={handleCloseMyAccount}
-        user={user}
-        onSignOut={signOut}
-      />
+      {/* =======================================================
+          MOBILE TAB BAR
+      ======================================================= */}
 
       <MobileTabBar
-  activeTab="shop"
-  wishlistCount={wishlistItems.length}
-  cartCount={cartItemsCount}
-  user={user}
-  onShopClick={() => {
-    setIsProductDetailOpen(false);
-    setSelectedProduct(null);
-    setIsBannerCollectionOpen(false);
-    setSelectedBanner(null);
-    setIsCartOpen(false);
-    setIsWishlistOpen(false);
-    setIsCheckoutOpen(false);
-    setViewMode('floor');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }}
-  onWishlistClick={() => {
-    setIsBannerCollectionOpen(false);
-    setSelectedBanner(null);
-    handleOpenWishlist();
-  }}
-  onCartClick={() => {
-    setIsBannerCollectionOpen(false);
-    setSelectedBanner(null);
-    handleOpenCart();
-  }}
-  onAccountClick={() => {
-    setIsBannerCollectionOpen(false);
-    setSelectedBanner(null);
-    user ? handleOpenMyAccount() : handleOpenAuth();
-  }}
-/>
+        activeTab="shop"
+        wishlistCount={wishlistItems.length}
+        cartCount={cartItemsCount}
+        user={user}
+        onShopClick={() => {
+          navigate('/');
+          setIsCartOpen(false);
+          setIsWishlistOpen(false);
+          handleCloseHeroCollection();
+          setViewMode('floor');
+
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+        }}
+        onWishlistClick={() => {
+          handleCloseHeroCollection();
+          handleOpenWishlist();
+        }}
+        onCartClick={() => {
+          handleCloseHeroCollection();
+          handleOpenCart();
+        }}
+        onAccountClick={() => {
+          handleCloseHeroCollection();
+
+          user
+            ? handleOpenMyAccount()
+            : handleOpenAuth();
+        }}
+      />
+
+      {/* =======================================================
+          SPLASH SCREEN
+      ======================================================= */}
 
       <SplashScreen
         isVisible={showSplash}

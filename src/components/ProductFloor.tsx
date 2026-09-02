@@ -133,6 +133,8 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
     0
   );
 
+  
+
   const wishlistCount =
     wishlistItems.length;
 

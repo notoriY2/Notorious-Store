@@ -45,7 +45,7 @@ const MobileTabBar: React.FC<MobileTabBarProps> = ({
             key={tab.id}
             type="button"
             onClick={tab.onClick}
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 relative"
+            className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 relative active:scale-90 transition-transform duration-150"
           >
             <div className="relative">
               {isAccountTab && user ? (

@@ -18,6 +18,7 @@ import CurrencySelector from './CurrencySelector';
 import { Currency } from '../hooks/useCurrency';
 import { User as UserType } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
+import { useSwipeToDismiss } from '../hooks/useSwipeToDismiss';
 
 import ShopFooter from './ShopFooter';
 
@@ -119,6 +120,15 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   
   const [showFooter, setShowFooter] = useState(false);
+  const [barVisible, setBarVisible] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setBarVisible(true), 50);
+    return () => clearTimeout(t);
+  }, [product?.id]);
+
+  const { dragY: heroDragY, onTouchStart: heroTouchStart, onTouchMove: heroTouchMove, onTouchEnd: heroTouchEnd } = 
+    useSwipeToDismiss(onClose, 100);
 
   useEffect(() => {
   if (!isOpen) return;
@@ -366,12 +376,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
   };
 
   const handleProductClick = (clickedProduct: Product) => {
-    onClose();
-
-    setTimeout(() => {
-      onProductClick(clickedProduct);
-    }, 100);
-  };
+  onProductClick(clickedProduct);
+};
 
   const visibleItems = 4;
 
@@ -627,7 +633,18 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
             </div>
 
             {/* Mobile-only single image carousel */}
-            <div className="order-1 lg:hidden relative w-full" style={{ aspectRatio: '4/6.4' }}>
+            <div 
+              className="order-1 lg:hidden relative w-full touch-none"
+              style={{
+                aspectRatio: '4/6.4',
+                transform: `translateY(${heroDragY}px)`,
+                opacity: 1 - Math.min(heroDragY / 300, 0.6),
+                transition: heroDragY === 0 ? 'transform 200ms ease-out, opacity 200ms ease-out' : 'none',
+              }}
+              onTouchStart={heroTouchStart}
+              onTouchMove={heroTouchMove}
+              onTouchEnd={heroTouchEnd}
+            >
               <img
                 src={productImages[mobileImageIndex]}
                 alt={`${product.name} - View ${mobileImageIndex + 1}`}
@@ -1203,7 +1220,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
       {/* MOBILE STICKY ADD TO BAG */}
       <div
         className="lg:hidden fixed bottom-14 left-0 right-0 z-50 bg-white border-t border-gray-200 px-4 py-3 flex items-center gap-3"
-        style={{ paddingBottom: '0.75rem' }}
+        style={{
+          paddingBottom: '0.75rem',
+          transform: barVisible ? 'translateY(0)' : 'translateY(100%)',
+          transition: 'transform 300ms ease-out',
+        }}
       >
         <div className="min-w-0">
           <p className="text-[10px] uppercase tracking-widest text-gray-400 truncate">

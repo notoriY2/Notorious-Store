@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Heart } from 'lucide-react';
 import { Product } from '../types/Product';
+import { useSwipeToDismiss } from '../hooks/useSwipeToDismiss';
 
 interface WishlistProps {
   isOpen: boolean;
@@ -23,6 +24,8 @@ const Wishlist = React.forwardRef<HTMLDivElement, WishlistProps>((({
 }, ref) => {
   const [animatingButtons, setAnimatingButtons] = useState<Set<string>>(new Set());
   const [addedToCartButtons, setAddedToCartButtons] = useState<Set<string>>(new Set());
+
+  const { dragY, onTouchStart, onTouchMove, onTouchEnd } = useSwipeToDismiss(onClose);
 
   // Auto-animate buttons every 10 seconds
   useEffect(() => {
@@ -98,11 +101,20 @@ const Wishlist = React.forwardRef<HTMLDivElement, WishlistProps>((({
           lg:rounded-none lg:max-h-none lg:h-full lg:max-w-md
           animate-[sheetUp_260ms_ease-out]
         "
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        style={{
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          transform: `translateY(${dragY}px)`,
+          transition: dragY === 0 ? 'transform 200ms ease-out' : 'none',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* mobile-only drag handle */}
-        <div className="lg:hidden flex justify-center pt-3 pb-1">
+        <div 
+          className="lg:hidden flex justify-center pt-3 pb-1 touch-none"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
           <div className="w-10 h-1.5 rounded-full bg-gray-300" />
         </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { CartItem } from '../types/Product';
+import { useSwipeToDismiss } from '../hooks/useSwipeToDismiss';
 
 interface CartProps {
   isOpen: boolean;
@@ -26,6 +27,8 @@ const Cart = React.forwardRef<HTMLDivElement, CartProps>(({
 }, ref) => {
   if (!isOpen) return null;
 
+  const { dragY, onTouchStart, onTouchMove, onTouchEnd } = useSwipeToDismiss(onClose);
+
   const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
@@ -33,26 +36,35 @@ const Cart = React.forwardRef<HTMLDivElement, CartProps>(({
       className="fixed inset-x-0 top-0 mobile-drawer-overlay bg-transparent z-[57] flex items-end lg:items-stretch lg:justify-end pointer-events-none" 
       ref={ref}
     >
-      {/* Invisible/backdrop layer that catches clicks outside the drawer to close it */}
+      {/* Invisible layer that catches clicks outside the drawer to close it without the gray overlay */}
       <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-[2px] pointer-events-auto"
+        className="absolute inset-0 bg-transparent pointer-events-auto"
         onClick={onClose}
       />
 
       <div 
-        className="
-          relative bg-white w-full shadow-2xl flex flex-col pointer-events-auto
-          rounded-t-[28px] max-h-[88dvh]
-          lg:rounded-none lg:max-h-none lg:h-full lg:max-w-md
-          animate-[sheetUp_260ms_ease-out]
-        "
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-        onClick={(e) => e.stopPropagation()}
-      >
+  className="
+    relative bg-white w-full shadow-2xl flex flex-col pointer-events-auto
+    rounded-t-[28px] max-h-[88dvh]
+    lg:rounded-none lg:max-h-none lg:h-full lg:max-w-md
+    animate-[sheetUp_260ms_ease-out]
+  "
+  style={{
+    paddingBottom: 'env(safe-area-inset-bottom)',
+    transform: `translateY(${dragY}px)`,
+    transition: dragY === 0 ? 'transform 200ms ease-out' : 'none',
+  }}
+  onClick={(e) => e.stopPropagation()}
+>
         {/* mobile-only drag handle */}
-        <div className="lg:hidden flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1.5 rounded-full bg-gray-300" />
-        </div>
+        <div
+  className="lg:hidden flex justify-center pt-3 pb-1 touch-none"
+  onTouchStart={onTouchStart}
+  onTouchMove={onTouchMove}
+  onTouchEnd={onTouchEnd}
+>
+  <div className="w-10 h-1.5 rounded-full bg-gray-300" />
+</div>
 
         {/* Header */}
         <div className="px-5 pt-2 pb-4 lg:p-6 border-b border-gray-100 lg:border-gray-200">
@@ -118,14 +130,14 @@ const Cart = React.forwardRef<HTMLDivElement, CartProps>(({
                       <div className="flex items-center rounded-full border border-gray-200 overflow-hidden">
                         <button
                           onClick={() => onUpdateQuantity(item.uniqueId, Math.max(0, item.quantity - 1))}
-                          className="w-9 h-9 flex items-center justify-center active:bg-gray-100 cursor-pointer"
+                          className="w-9 h-9 flex items-center justify-center active:bg-gray-100 active:scale-90 transition-transform duration-100 cursor-pointer"
                         >
                           <Minus size={14} />
                         </button>
                         <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
                         <button
                           onClick={() => onUpdateQuantity(item.uniqueId, item.quantity + 1)}
-                          className="w-9 h-9 flex items-center justify-center active:bg-gray-100 cursor-pointer"
+                          className="w-9 h-9 flex items-center justify-center active:bg-gray-100 active:scale-90 transition-transform duration-100 cursor-pointer"
                         >
                           <Plus size={14} />
                         </button>
@@ -133,7 +145,7 @@ const Cart = React.forwardRef<HTMLDivElement, CartProps>(({
                       
                       <button
                         onClick={() => onRemoveItem(item.uniqueId)}
-                        className="text-sm text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                        className="text-sm text-gray-400 hover:text-red-500 transition-colors active:scale-90 transition-transform duration-100 cursor-pointer"
                       >
                         REMOVE
                       </button>
