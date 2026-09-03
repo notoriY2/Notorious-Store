@@ -653,6 +653,7 @@ function App() {
           MOBILE TAB BAR
       ======================================================= */}
 
+{!showSplash && (
       <MobileTabBar
         activeTab="shop"
         wishlistCount={wishlistItems.length}
@@ -686,7 +687,7 @@ function App() {
             : handleOpenAuth();
         }}
       />
-
+)}
       {/* =======================================================
           SPLASH SCREEN
       ======================================================= */}

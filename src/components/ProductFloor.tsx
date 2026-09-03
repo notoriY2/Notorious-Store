@@ -39,6 +39,7 @@ import { User as UserType } from '../hooks/useAuth';
 import { useBanners } from '../hooks/useBanners';
 import { StorefrontBanner } from '../data/banners';
 import ShopFooter from './ShopFooter';
+import { FLOOR_LAYOUT } from '../data/floorLayout';
 
 interface ProductFloorProps {
   products: Product[];
@@ -100,6 +101,8 @@ interface ProductFloorProps {
   viewMode: 'floor' | 'grid';
   onViewModeChange: (mode: 'floor' | 'grid') => void;
 }
+
+const SKELETON_COUNT = 18;
 
 const ProductFloor: React.FC<ProductFloorProps> = ({
   products,
@@ -902,6 +905,7 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
     marginBottom: '50px',
   } as React.CSSProperties}
 >
+              {isLoading && visibleProducts.length === 0 && (  <>    {FLOOR_LAYOUT.slice(0, SKELETON_COUNT).map((slot, index) => (      <div        key={`skeleton-${index}`}        className="absolute bg-gray-100 animate-pulse rounded-lg"        style={{          top: slot.position.top,          left: slot.position.left,          transform: `translate(-17%, 0) rotate(${slot.rotation}deg) scale(${slot.scale * 0.8})`,          zIndex: slot.zIndex,          width: '90px',          height: '120px',        }}      />    ))}  </>)}
               {visibleProducts.map(
                 (product) => (
                   <ProductItem
@@ -927,12 +931,9 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
           </div>
         ) : (
           <div
-            className="px-0"
-            style={{
-              marginBottom:
-                '50px',
-            }}
+            className="px-0 mb-[49px] md:mb-[calc(50px+0.37cm)]"
           >
+            
             <ProductGrid
               products={
                 visibleProducts

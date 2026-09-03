@@ -26,6 +26,9 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, onProductClick, onHo
   const isMobile = useIsMobile();
   const position = isMobile && product.mobilePosition ? product.mobilePosition : product.position;
   
+  // Less negative X translation on desktop shifts products to the right
+  const translateX = isMobile ? '-28%' : '-17%';
+  
   return (
     <div
       className="absolute cursor-pointer group active:scale-95 transition-transform duration-150"
@@ -35,15 +38,16 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, onProductClick, onHo
       style={{
         top: position.top,
         left: position.left,
-        transform: `rotate(${product.rotation}deg) scale(${product.scale * 0.8})`,
+        transform: `translate(${translateX}, 0) rotate(${product.rotation}deg) scale(${product.scale * 0.8})`,
         zIndex: product.zIndex,
       }}
     >
-      <div className="relative m-2 md:m-4">
+      {/* Mobile size stays w-44 h-44; desktop container size increased to w-64 h-64 */}
+      <div className="relative m-3 md:m-6 w-44 h-44 md:w-72 md:h-72 flex items-center justify-center">
         {isMobile && (
           <div className="absolute inset-0 -m-1 rounded-2xl bg-gradient-to-b from-white/70 to-transparent blur-sm -z-10" />
         )}
-        {/* Main product image with explicit intrinsic dimensions to avoid layout shifts */}
+        
         <img
           src={product.image}
           alt={product.name}
@@ -51,7 +55,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, onProductClick, onHo
           height="400"
           loading="lazy"
           decoding="async"
-          className={`mobile-floor-product md:w-48 md:h-49 lg:w-60 lg:h-61 xl:w-72 xl:h-73 object-cover ${
+          className={`w-full h-full object-cover shadow-sm ${
             isMobile ? 'rounded-2xl' : 'rounded-lg'
           }`}
         />

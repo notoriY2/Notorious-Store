@@ -344,7 +344,7 @@ const BannerCollection: React.FC<BannerCollectionProps> = ({
               />
             )}
 
-            <div style={{ height: '3cm' }} />
+            <div className="h-0 md:h-[1.65cm]" />
           </div>
 
         </div>

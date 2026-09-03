@@ -42,8 +42,9 @@ const PRODUCTS_SELECT_FULL = `
   )
 `;
 
-const MAX_RETRIES = 3;
-const BASE_DELAY_MS = 500;
+// AFTER
+const MAX_RETRIES = 1;       // one retry, not four attempts
+const BASE_DELAY_MS = 300;   // short, fixed backoff, no exponential blowup
 const PRODUCTS_CACHE_TTL_MS = 2 * 60_000; // 2 minutes
 const PRODUCTS_CACHE_KEY = 'products:active';
 
@@ -92,9 +93,10 @@ const fetchProductsFromSupabase = async (): Promise<Product[]> => {
       throw new Error(fetchError.message);
     }
 
-    const delay = BASE_DELAY_MS * 2 ** attempt + Math.random() * 200;
-    await sleep(delay);
-    attempt += 1;
+    // AFTER
+const delay = BASE_DELAY_MS + Math.random() * 150; // flat, no exponential growth
+await sleep(delay);
+attempt += 1;
   }
 
   throw new Error(lastErrorMessage ?? 'Failed to load products');

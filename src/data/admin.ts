@@ -1719,6 +1719,49 @@ export const getAdminAbandonedCarts =
 // ADMIN USERS
 // ============================================================
 
+export const inviteAdminUser = async (
+  name: string,
+  email: string,
+  role: 'Admin' | 'Manager' | 'Support' | 'Analyst' | 'Viewer'
+): Promise<void> => {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const { error: allowlistError } = await supabase
+    .from('admin_email_allowlist')
+    .upsert({ email: normalizedEmail, admin_role: role }, { onConflict: 'email' });
+
+  if (allowlistError) {
+    console.error('Failed to add to admin allowlist:', allowlistError);
+    throw allowlistError;
+  }
+
+  const { data: existingProfile, error: profileLookupError } = await supabase
+    .from('profiles')
+    .select('id')
+    .ilike('email', normalizedEmail)
+    .maybeSingle();
+
+  if (profileLookupError) {
+    console.error('Failed to look up existing profile:', profileLookupError);
+    throw profileLookupError;
+  }
+
+  if (existingProfile) {
+    const { error: updateError } = await supabase
+      .from('profiles')
+      .update({ is_admin: true, admin_role: role, admin_status: 'Active' })
+      .eq('id', existingProfile.id);
+
+    if (updateError) {
+      console.error('Failed to grant admin access:', updateError);
+      throw updateError;
+    }
+  }
+
+  invalidateAdminCache('users:');
+  void logAdminActivity(`Invited ${name || normalizedEmail} (${normalizedEmail}) as ${role}`);
+};
+
 export const getAdminUsers =
   async (): Promise<AdminAdminUser[]> =>
     cached(

@@ -636,7 +636,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
             <div 
               className="order-1 lg:hidden relative w-full touch-none"
               style={{
-                aspectRatio: '4/6.4',
+                aspectRatio: '3/4',
                 transform: `translateY(${heroDragY}px)`,
                 opacity: 1 - Math.min(heroDragY / 300, 0.6),
                 transition: heroDragY === 0 ? 'transform 200ms ease-out, opacity 200ms ease-out' : 'none',
@@ -1201,6 +1201,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
               })}
             </div>
           </div>
+
+                    <div style={{ height: '3cm' }} />
 
           {/* =====================================================
               FOOTER

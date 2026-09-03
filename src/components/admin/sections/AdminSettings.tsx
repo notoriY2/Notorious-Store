@@ -27,7 +27,7 @@ import {
   useAdminToast,
 } from '../AdminUI';
 
-import { getAdminUsers } from '../../../data/admin';
+import { getAdminUsers, inviteAdminUser } from '../../../data/admin';
 import { getStoreSettings, updateStoreSettings } from '../../../data/storeSettings';
 import { AdminAdminUser } from '../../../types/admin';
 
@@ -484,37 +484,27 @@ const AdminSettings: React.FC<AdminSettingsProps> = ({
     isValidEmail(inviteForm.email) &&
     inviteForm.role.trim() !== '';
 
-  const handleInviteMember = () => {
+  const handleInviteMember = async () => {
     if (isViewer) {
       showToast('error', "You don't have permission to make changes (Viewer role).");
       return;
     }
-
     if (!inviteFormValid) {
       setInviteStatus('error');
-
-      showToast(
-        'error',
-        'Please enter a valid name and email address.'
-      );
-
+      showToast('error', 'Please enter a valid name and email address.');
       return;
     }
-
     setInviteStatus('loading');
-
-    window.setTimeout(() => {
+    try {
+      await inviteAdminUser(inviteForm.name.trim(), inviteForm.email.trim(), inviteForm.role as any);
       setInviteStatus('success');
-
-      showToast(
-        'success',
-        `Invitation sent to ${inviteForm.email}.`
-      );
-
-      window.setTimeout(() => {
-        closeInviteModal();
-      }, 900);
-    }, 900);
+      showToast('success', `${inviteForm.email} now has admin access.`);
+      setTeamReloadKey(current => current + 1);
+      window.setTimeout(() => { closeInviteModal(); }, 900);
+    } catch (err) {
+      setInviteStatus('error');
+      showToast('error', err instanceof Error ? err.message : 'Failed to invite team member.');
+    }
   };
 
   /* =======================================================

@@ -46,6 +46,7 @@ import {
 
 import HeroSection from '../../HeroSection';
 import AnnouncementBar from '../../AnnouncementBar';
+import { getNextAvailableFloorSlot, FLOOR_LAYOUT } from '../../../data/floorLayout';
 
 import { useProducts } from '../../../hooks/useProducts';
 import type { Product } from '../../../types/Product';
@@ -2555,6 +2556,79 @@ export const ProductFloorManager: React.FC<ProductFloorManagerProps> = ({
   products,
   updateProductFloorPosition,
 }) => {
+
+const previewContainerRef = useRef<HTMLDivElement>(null);
+const dragStateRef = useRef<{
+  id: string; startX: number; startY: number;
+  startTop: number; startLeft: number;
+  startRotation: number; startScale: number;
+} | null>(null);
+
+const parseUnit = (value: string): number => parseFloat(value.replace(/[^\d.-]/g, '')) || 0;
+
+const handleDragStart = (e: React.MouseEvent, product: EditableFloorProduct) => {
+  if (isViewer) return;
+  e.stopPropagation();
+  setSelectedId(product.id);
+
+  const container = previewContainerRef.current;
+  if (!container) return;
+  const rect = container.getBoundingClientRect();
+
+  const currentPosition =
+    previewMode === 'desktop' ? product.position : product.mobilePosition || product.position;
+
+  dragStateRef.current = {
+    id: product.id,
+    startX: e.clientX,
+    startY: e.clientY,
+    startTop: parseUnit(currentPosition.top),
+    startLeft: parseUnit(currentPosition.left),
+    startRotation: product.rotation,
+    startScale: product.scale,
+  };
+
+  const handleMouseMove = (moveEvent: MouseEvent) => {
+    const drag = dragStateRef.current;
+    if (!drag) return;
+
+    if (moveEvent.altKey) {
+      const nextRotation = Math.round(drag.startRotation + (moveEvent.clientX - drag.startX) * 0.5);
+      setFloorProducts(prev => prev.map(p => (p.id === drag.id ? { ...p, rotation: nextRotation } : p)));
+      return;
+    }
+
+    if (moveEvent.shiftKey) {
+      const nextScale = Math.max(0.3, Math.min(2, drag.startScale - (moveEvent.clientY - drag.startY) * 0.005));
+      setFloorProducts(prev => prev.map(p => (p.id === drag.id ? { ...p, scale: nextScale } : p)));
+      return;
+    }
+
+    const deltaXPercent = ((moveEvent.clientX - drag.startX) / rect.width) * 100;
+    const deltaYPercent = ((moveEvent.clientY - drag.startY) / rect.height) * 100;
+    const nextLeft = `${(drag.startLeft + deltaXPercent).toFixed(2)}%`;
+    const nextTop = `${(drag.startTop + deltaYPercent).toFixed(2)}%`;
+
+    setFloorProducts(prev =>
+      prev.map(p => {
+        if (p.id !== drag.id) return p;
+        return previewMode === 'desktop'
+          ? { ...p, position: { top: nextTop, left: nextLeft } }
+          : { ...p, mobilePosition: { top: nextTop, left: nextLeft } };
+      })
+    );
+  };
+
+  const handleMouseUp = () => {
+    dragStateRef.current = null;
+    window.removeEventListener('mousemove', handleMouseMove);
+    window.removeEventListener('mouseup', handleMouseUp);
+  };
+
+  window.addEventListener('mousemove', handleMouseMove);
+  window.addEventListener('mouseup', handleMouseUp);
+};
+
   const { showToast } = useAdminToast(); // ADD THIS (import from '../AdminUI')
   const isViewer = useIsViewer();
       // Off-floor products (showOnFloor: false) are deliberately excluded
@@ -2595,6 +2669,30 @@ export const ProductFloorManager: React.FC<ProductFloorManagerProps> = ({
   const selectedProduct = floorProducts.find(
     (product) => product.id === selectedId
   );
+
+  const handleRandomizePositions = () => {
+  if (isViewer) {
+    showToast('error', "You don't have permission to make changes (Viewer role).");
+    return;
+  }
+  setFloorProducts(prev => {
+    const slots = prev.map((_, i) => FLOOR_LAYOUT[i % FLOOR_LAYOUT.length]);
+    for (let i = slots.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [slots[i], slots[j]] = [slots[j], slots[i]];
+    }
+    return prev.map((product, i) => ({
+      ...product,
+      position: { ...slots[i].position },
+      mobilePosition: { ...slots[i].mobilePosition },
+      rotation: slots[i].rotation,
+      scale: slots[i].scale,
+      zIndex: slots[i].zIndex,
+    }));
+  });
+  setFloorSaveSuccess(false);
+  setFloorSaveError(null);
+};
 
   // Save Handlers
     const handleSaveFloor = async () => {
@@ -2820,7 +2918,11 @@ export const ProductFloorManager: React.FC<ProductFloorManagerProps> = ({
       <SectionCard
         title="Floor Preview"
         action={
-          <div className="flex items-center space-x-1 border border-gray-200 rounded-lg p-1">
+          <div className="flex items-center gap-2">
+      <AdminButton size="sm" variant="secondary" onClick={handleRandomizePositions}>
+        <RefreshCw size={12} className="inline mr-1" />
+        Randomize
+      </AdminButton>
             <button
               type="button"
               onClick={() => setPreviewMode('desktop')}
@@ -2849,6 +2951,7 @@ export const ProductFloorManager: React.FC<ProductFloorManagerProps> = ({
         }
       >
         <div
+        ref={previewContainerRef}
           className={`relative overflow-hidden bg-white border border-gray-200 mx-auto ${
             previewMode === 'desktop'
               ? 'w-full h-[520px]'
@@ -2871,6 +2974,7 @@ export const ProductFloorManager: React.FC<ProductFloorManagerProps> = ({
               <button
                 type="button"
                 key={product.id}
+                onMouseDown={(e) => handleDragStart(e, product)}
                 onClick={() => setSelectedId(product.id)}
                 className={`absolute overflow-hidden transition-all duration-200 ${
                   isSelected
