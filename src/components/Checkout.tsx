@@ -28,14 +28,15 @@ import {
 
 import {
   createOrder,
+  claimGuestOrder, 
   CreateOrderPayload,
   CreateOrderItemInput,
 } from '../data/admin';
 
 import SizeGuideModal from './SizeGuideModal';
-
 import { trackEvent } from '../lib/analytics'
-
+// Add near the top of Checkout.tsx, with the other imports:
+import { openSupportChat } from '../lib/supportChatBus';
 import { supabase } from '../lib/supabase';
 
 /* =========================================================
@@ -124,8 +125,6 @@ const Checkout: React.FC<
   isAuthLoading = false,
   clearCart,
 }) => {
-
-  const [showSizeGuide, setShowSizeGuide] = useState(false);
   /* =======================================================
      FORM STATE
   ======================================================= */
@@ -212,10 +211,14 @@ const Checkout: React.FC<
     setLoginError,
   ] = useState('');
 
+  const [lastOrderId, setLastOrderId] = useState('');
   const [discountCode, setDiscountCode] = useState('');
 const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; type: string; value: number } | null>(null);
 const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
-
+const [showSizeGuide, setShowSizeGuide] = useState(false);
+const [showAccountPrompt, setShowAccountPrompt] = useState(false);
+const [conversionPassword, setConversionPassword] = useState('');
+const [conversionStatus, setConversionStatus] = useState<'idle' | 'loading' | 'done'>('idle');
 const handleApplyDiscount = async () => {
   const { data } = await supabase
     .from('discounts').select('*').eq('code', discountCode.trim().toUpperCase()).eq('status', 'Active').maybeSingle();
@@ -505,25 +508,22 @@ const total = subtotal + shipping + tax - discountAmount;
 
       // Real order number from the database (set_order_number()
       // trigger, format NY2-XXXXX) instead of a Date.now() stand-in.
-      setOrderNumber(
-        result.orderNumber
-      );
+      setOrderNumber(result.orderNumber);
+setLastOrderId(result.id);   // ADD THIS
+setIsProcessing(false);
+setOrderComplete(true);
 
-      setIsProcessing(false);
-      setOrderComplete(true);
+if (!user) {
+  setShowAccountPrompt(true);
+}
 
-      window.setTimeout(
-        () => {
-          onClose();
-
-          setOrderComplete(
-            false
-          );
-
-          setOrderNumber('');
-        },
-        3500
-      );
+      if (user) {
+  window.setTimeout(() => {
+    onClose();
+    setOrderComplete(false);
+    setOrderNumber('');
+  }, 3500);
+}
     } catch (error) {
       console.error(
         'Failed to place order:',
@@ -738,6 +738,8 @@ void completeOrder();
      ORDER COMPLETE
   ======================================================= */
 
+  // Snippet for CheckoutModal.tsx / Order Confirmation View
+
   if (orderComplete) {
     return (
       <div className="fixed inset-x-0 top-0 h-[100dvh] z-[100] bg-white overflow-y-auto">
@@ -786,6 +788,48 @@ void completeOrder();
                 #{orderNumber}
               </p>
             </div>
+
+            {showAccountPrompt && conversionStatus !== 'done' && (
+              <div className="border border-gray-200 p-5 mb-8 text-left">
+                <p className="text-sm font-medium mb-1">Create an account to track this order</p>
+                <p className="text-xs text-gray-500 mb-4">
+                  We'll use {formData.email} — just set a password.
+                </p>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={conversionPassword}
+                  onChange={e => setConversionPassword(e.target.value)}
+                  className="w-full h-12 px-4 border border-gray-300 mb-3 focus:outline-none focus:border-black"
+                />
+                <button
+                  type="button"
+                  disabled={conversionStatus === 'loading' || !conversionPassword}
+                  onClick={async () => {
+                    if (!onSignUp) return;
+                    setConversionStatus('loading');
+                    try {
+                      await onSignUp(
+  formData.email,
+  conversionPassword,
+  `${formData.firstName} ${formData.lastName}`.trim()
+);
+setConversionStatus('done');
+await claimGuestOrder(lastOrderId, formData.email);
+                    } catch {
+                      setConversionStatus('idle');
+                    }
+                  }}
+                  className="w-full h-12 bg-black text-white text-sm tracking-wide disabled:opacity-50"
+                >
+                  {conversionStatus === 'loading' ? 'Creating...' : 'Create Account'}
+                </button>
+              </div>
+            )}
+
+            {conversionStatus === 'done' && (
+              <p className="text-sm text-green-600 mb-8">Account created — you're all set.</p>
+            )}
 
             <button
               type="button"
@@ -2062,16 +2106,12 @@ void completeOrder();
                     </button>
 
                     <button
-                      type="button"
-                      onClick={() =>
-                        handleLinkClick(
-                          'https://notorious.y2.com/help'
-                        )
-                      }
-                      className="block text-left text-xs text-[#B58627] hover:text-black hover:underline transition-colors"
-                    >
-                      Help Center
-                    </button>
+  type="button"
+  onClick={() => openSupportChat()}
+  className="block text-left text-xs text-[#B58627] hover:text-black hover:underline transition-colors"
+>
+  Help Center
+</button>
                   </div>
                 </div>
 
@@ -2293,6 +2333,7 @@ void completeOrder();
                     </button>
                   </div>
                 )}
+
 
                 <SizeGuideModal isOpen={showSizeGuide} onClose={() => setShowSizeGuide(false)} />
               </div>
