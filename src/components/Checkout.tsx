@@ -35,8 +35,7 @@ import {
 
 import SizeGuideModal from './SizeGuideModal';
 import { trackEvent } from '../lib/analytics'
-// Add near the top of Checkout.tsx, with the other imports:
-import { openSupportChat } from '../lib/supportChatBus';
+
 import { supabase } from '../lib/supabase';
 
 /* =========================================================
@@ -2104,14 +2103,6 @@ await claimGuestOrder(lastOrderId, formData.email);
                     >
                       +27 63 503 5882
                     </button>
-
-                    <button
-  type="button"
-  onClick={() => openSupportChat()}
-  className="block text-left text-xs text-[#B58627] hover:text-black hover:underline transition-colors"
->
-  Help Center
-</button>
                   </div>
                 </div>
 
