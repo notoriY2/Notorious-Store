@@ -32,6 +32,8 @@ import {
   CreateOrderItemInput,
 } from '../data/admin';
 
+import SizeGuideModal from './SizeGuideModal';
+
 import { trackEvent } from '../lib/analytics'
 
 import { supabase } from '../lib/supabase';
@@ -122,6 +124,8 @@ const Checkout: React.FC<
   isAuthLoading = false,
   clearCart,
 }) => {
+
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
   /* =======================================================
      FORM STATE
   ======================================================= */
@@ -2245,16 +2249,12 @@ void completeOrder();
                     </button>
 
                     <button
-                      type="button"
-                      onClick={() =>
-                        handleLinkClick(
-                          'https://notorious.y2.com/size-guide'
-                        )
-                      }
-                      className="text-left text-xs text-gray-500 hover:text-black hover:underline transition-colors"
-                    >
-                      Size Guide
-                    </button>
+  type="button"
+  onClick={() => setShowSizeGuide(true)}
+  className="text-left text-xs text-gray-500 hover:text-black hover:underline transition-colors"
+>
+  Size Guide
+</button>
 
                     <button
                       type="button"
@@ -2293,6 +2293,8 @@ void completeOrder();
                     </button>
                   </div>
                 )}
+
+                <SizeGuideModal isOpen={showSizeGuide} onClose={() => setShowSizeGuide(false)} />
               </div>
             </aside>
           </div>
