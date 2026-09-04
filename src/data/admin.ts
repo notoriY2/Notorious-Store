@@ -2253,3 +2253,16 @@ export const refreshCarrierShipment = async (orderId: string): Promise<CarrierSh
   if (error) throw error;
   return data as CarrierShipment;
 };
+
+
+export const claimGuestOrder = async (orderId: string, userEmail: string): Promise<void> => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+  const { error } = await supabase
+    .from('orders')
+    .update({ user_id: user.id })
+    .eq('id', orderId)
+    .eq('customer_email', userEmail)
+    .is('user_id', null);
+  if (error) console.error('Failed to claim guest order:', error);
+};
