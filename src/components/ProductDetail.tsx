@@ -20,6 +20,7 @@ import { User as UserType } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 import { useSwipeToDismiss } from '../hooks/useSwipeToDismiss';
 import { notifyWhenInStock } from '../data/stockNotifications';
+import SizeGuideModal from './SizeGuideModal';
 
 import ShopFooter from './ShopFooter';
 
@@ -106,6 +107,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
     getDefaultSize(product)
   );
 
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [notifySize, setNotifySize] = useState<string | null>(null);
 const [notifyEmail, setNotifyEmail] = useState('');
 const [notifySent, setNotifySent] = useState(false);
@@ -754,12 +756,19 @@ const [notifySent, setNotifySent] = useState(false);
               {/* SIZE */}
               {availableSizes.length > 0 && (
                 <div>
-                  <h3 className="font-light mb-3 tracking-wide text-sm md:text-base">
-                    SIZE{' '}
-                    <span className="font-normal">
-                      {selectedSize}
-                    </span>
-                  </h3>
+                  <div className="flex items-center justify-between mb-3">
+  <h3 className="font-light tracking-wide text-sm md:text-base">
+    SIZE{' '}
+    <span className="font-normal">{selectedSize}</span>
+  </h3>
+  <button
+    type="button"
+    onClick={() => setShowSizeGuide(true)}
+    className="text-xs text-gray-400 underline hover:text-black"
+  >
+    Size Guide
+  </button>
+</div>
 
                   <div className="flex flex-wrap gap-2 mb-2">
                     {availableSizes.map((sizeOption) => {
@@ -1322,6 +1331,8 @@ const [notifySent, setNotifySent] = useState(false);
         onClose={() => setIsGalleryOpen(false)}
         initialIndex={selectedImageIndex}
       />
+
+      <SizeGuideModal isOpen={showSizeGuide} onClose={() => setShowSizeGuide(false)} />
     </>
   );
 };
