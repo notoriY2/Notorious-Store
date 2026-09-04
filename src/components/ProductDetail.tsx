@@ -19,6 +19,7 @@ import { Currency } from '../hooks/useCurrency';
 import { User as UserType } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 import { useSwipeToDismiss } from '../hooks/useSwipeToDismiss';
+import { notifyWhenInStock } from '../data/stockNotifications';
 
 import ShopFooter from './ShopFooter';
 
@@ -105,6 +106,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
     getDefaultSize(product)
   );
 
+  const [notifySize, setNotifySize] = useState<string | null>(null);
+const [notifyEmail, setNotifyEmail] = useState('');
+const [notifySent, setNotifySent] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -759,34 +763,69 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
 
                   <div className="flex flex-wrap gap-2 mb-2">
                     {availableSizes.map((sizeOption) => {
-                      const isOutOfStock =
-                        sizeOption.available <= 0;
+  const isOutOfStock = sizeOption.available <= 0;
 
-                      return (
-                        <button
-                          type="button"
-                          key={sizeOption.size}
-                          disabled={isOutOfStock}
-                          onClick={() =>
-                            setSelectedSize(sizeOption.size)
-                          }
-                          title={
-                            isOutOfStock
-                              ? 'Out of stock'
-                              : undefined
-                          }
-                          className={`px-3 py-2 text-center transition-colors text-sm border ${
-                            isOutOfStock
-                              ? 'text-gray-300 border-gray-200 line-through cursor-not-allowed'
-                              : selectedSize === sizeOption.size
-                              ? 'text-black font-medium bg-gray-100'
-                              : 'text-gray-600 hover:text-black'
-                          }`}
-                        >
-                          {sizeOption.size}
-                        </button>
-                      );
-                    })}
+  return (
+    <div key={sizeOption.size} className="flex flex-col items-center">
+      <button
+        type="button"
+        disabled={isOutOfStock}
+        onClick={() => setSelectedSize(sizeOption.size)}
+        className={`px-3 py-2 text-center transition-colors text-sm border ${
+          isOutOfStock
+            ? 'text-gray-300 border-gray-200 line-through cursor-not-allowed'
+            : selectedSize === sizeOption.size
+            ? 'text-black font-medium bg-gray-100'
+            : 'text-gray-600 hover:text-black'
+        }`}
+      >
+        {sizeOption.size}
+      </button>
+
+      {isOutOfStock && (
+        <button
+          type="button"
+          onClick={() => { setNotifySize(sizeOption.size); setNotifySent(false); }}
+          className="text-[10px] text-gray-400 hover:text-black underline mt-1"
+        >
+          Notify me
+        </button>
+      )}
+    </div>
+  );
+})}
+
+                    {notifySize && (
+  <div className="mt-3 p-3 border border-gray-200 bg-gray-50 flex items-center gap-2">
+    {notifySent ? (
+      <p className="text-xs text-green-700">
+        We'll email you when size {notifySize} is back.
+      </p>
+    ) : (
+      <>
+        <input
+          type="email"
+          value={notifyEmail}
+          onChange={e => setNotifyEmail(e.target.value)}
+          placeholder="you@example.com"
+          className="flex-1 text-sm px-2 py-1.5 border border-gray-300 focus:outline-none focus:border-black"
+        />
+        <button
+          type="button"
+          onClick={async () => {
+            if (!notifyEmail.trim()) return;
+            await notifyWhenInStock(product.id, notifySize, notifyEmail);
+            setNotifySent(true);
+          }}
+          className="px-3 py-1.5 bg-black text-white text-xs whitespace-nowrap"
+        >
+          Notify Me
+        </button>
+      </>
+    )}
+  </div>
+)}
+                    
                   </div>
                 </div>
               )}
