@@ -9,6 +9,7 @@ import React, {
 
 import {
   ShoppingBag,
+  Search,
   User,
   Grid3X3,
   Sparkles,
@@ -28,6 +29,7 @@ import CurrencySelector from './CurrencySelector';
 import PromoBanner from './PromoBanner';
 import AnnouncementBar from './AnnouncementBar';
 import HeroSection from './HeroSection';
+import SearchOverlay from './SearchOverlay';
 
 import {
   getStoreSettings,
@@ -126,6 +128,8 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
   viewMode,
   onViewModeChange,
 }) => {
+
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   /* =========================================================
      BASIC COUNTS
   ========================================================= */
@@ -573,6 +577,15 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
               }
             />
 
+            <button
+  type="button"
+  onClick={() => setIsSearchOpen(true)}
+  className="p-1 sm:p-2 hover:bg-gray-50 rounded-full transition-colors duration-200"
+  aria-label="Search products"
+>
+  <Search size={18} className="sm:w-5 sm:h-5 text-black" />
+</button>
+
             {/* DESKTOP VIEW TOGGLE */}
 
             <div className="hidden lg:flex items-center bg-gray-100 rounded-lg p-1">
@@ -988,6 +1001,14 @@ const ProductFloor: React.FC<ProductFloorProps> = ({
       >
         <ShopFooter />
       </div>
+      <SearchOverlay
+  isOpen={isSearchOpen}
+  onClose={() => setIsSearchOpen(false)}
+  products={uniqueProducts}
+  onAddToCart={onAddToCart}
+  onProductClick={onProductClick}
+  formatPrice={formatPrice}
+/>
     </div>
   );
 };
