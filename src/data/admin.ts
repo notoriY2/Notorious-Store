@@ -2211,3 +2211,45 @@ export const getAdminAnalyticsData =
         revenueByCountry,
       };
     });
+
+export interface CarrierShipment {
+  orderId: string;
+  carrier: string | null;
+  trackingNumber: string | null;
+  status: string | null;
+  estimatedDelivery: string | null;
+  lastCheckedAt: string | null;
+  events: { label: string; timestamp: string }[];
+}
+
+export const getCarrierShipment = async (orderId: string): Promise<CarrierShipment | null> => {
+  const { data, error } = await supabase
+    .from('carrier_shipments')
+    .select('*')
+    .eq('order_id', orderId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Failed to load carrier shipment:', error);
+    return null;
+  }
+  if (!data) return null;
+
+  return {
+    orderId: data.order_id,
+    carrier: data.carrier,
+    trackingNumber: data.tracking_number,
+    status: data.status,
+    estimatedDelivery: data.estimated_delivery,
+    lastCheckedAt: data.last_checked_at,
+    events: data.events ?? [],
+  };
+};
+
+export const refreshCarrierShipment = async (orderId: string): Promise<CarrierShipment> => {
+  const { data, error } = await supabase.functions.invoke('track-shipment', {
+    body: { orderId },
+  });
+  if (error) throw error;
+  return data as CarrierShipment;
+};
