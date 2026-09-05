@@ -1,5 +1,5 @@
 // src/components/ProductDetail.tsx
-
+//OLD ProductDetail.tsx
 import React, { useState, useEffect } from 'react';
 import {
   Heart,
